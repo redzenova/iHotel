@@ -31,6 +31,13 @@ import javafx.stage.StageStyle;
 public class iHotel extends Application {
 
     Stage window;
+
+    public iHotel() {
+    }
+    
+    public static void main(String[] args) {
+        launch(args);
+    }
     
     @Override
     public void start(Stage stage) throws Exception {
@@ -125,7 +132,7 @@ public class iHotel extends Application {
          //On mouse click
         regis_bt.setOnMouseClicked(e -> {
                regis_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #FFC997; -fx-text-fill: #ffffff");
-               window.close();
+               //window.close();
                Register register_page = new Register();
             try {
                 register_page.start(window);
@@ -240,8 +247,5 @@ public class iHotel extends Application {
         window.setScene(main_page);
         window.show();
     }
-    
-    public static void main(String[] args) {
-        launch(args);
-    }
+   
 }
