@@ -263,7 +263,7 @@ public class Database {
 
     public boolean serach(String data, String filename) throws FileNotFoundException, IOException {
 
-        File excelFile = new File("src/db/"+filename+".xlsx");
+        File excelFile = new File("src/db/" + filename + ".xlsx");
         FileInputStream fis = new FileInputStream(excelFile);
 
         XSSFWorkbook workbook = new XSSFWorkbook(fis);
@@ -289,9 +289,9 @@ public class Database {
         return false;
     }
 
-    public int getRowNum(String data) throws FileNotFoundException, IOException {
+    public int getRowNum(String data, String filename) throws FileNotFoundException, IOException {
 
-        File excelFile = new File("src/db/User.xlsx");
+        File excelFile = new File("src/db/"+filename+".xlsx");
         FileInputStream fis = new FileInputStream(excelFile);
 
         XSSFWorkbook workbook = new XSSFWorkbook(fis);
@@ -317,9 +317,9 @@ public class Database {
         return 0;
     }
 
-    public int getCellNum(String data) throws FileNotFoundException, IOException {
+    public int getCellNum(String data, String filename) throws FileNotFoundException, IOException {
 
-        File excelFile = new File("src/db/User.xlsx");
+        File excelFile = new File("src/db/"+filename+".xlsx");
         FileInputStream fis = new FileInputStream(excelFile);
 
         XSSFWorkbook workbook = new XSSFWorkbook(fis);
@@ -360,4 +360,33 @@ public class Database {
         fis.close();
     }
 
+    public String readCell(int rowNum, int collumNum, String filename) throws FileNotFoundException, IOException {
+        String s;
+
+        File excelFile = new File("src/db/" + filename + ".xlsx");
+        FileInputStream fis = new FileInputStream(excelFile);
+
+        XSSFWorkbook workbook = new XSSFWorkbook(fis);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+
+        Iterator<Row> rowIt = sheet.iterator();
+        while (rowIt.hasNext()) {
+            Row row = rowIt.next();
+            Iterator<Cell> cellIterator = row.cellIterator();
+            while (cellIterator.hasNext()) {
+                Cell cell = cellIterator.next();
+                if (row.getRowNum() == rowNum && cell.getColumnIndex() == collumNum) {
+                    s = cell.toString();
+                    System.out.println("pass is " + s);            
+                    return s;
+                }
+
+            }
+
+            workbook.close();
+            fis.close();
+
+        }
+        return null;
+    }
 }

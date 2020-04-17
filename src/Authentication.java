@@ -17,30 +17,30 @@ public class Authentication {
     public Authentication() {
     }
       
-    public boolean isUser(String username , String password) throws IOException{   
-        if(db.serach(username,"User")){
-            System.out.println("have user");
-            if(db.serach(password,"User")){
-                System.out.println("have pass");
-                if(db.getRowNum(username) == db.getRowNum(password) ){
-                    System.out.println("pass");
+    public boolean isUser(String username , String password) throws IOException{  
+        String filename = "User";
+        if(db.serach(username,filename)){
+            if(db.readCell(db.getRowNum(username,filename), 7, "User").equals(password)){
+                if(db.getRowNum(username,filename) == db.getRowNum(password,filename) ){
+                    System.out.println("pass !!");
                     return true;
                 }    
-            }
+            } else System.out.println("password not correct !");
         } 
         return false;
     }
     
     public boolean isAdmin(String username, String password) throws IOException{
+        String filename = "Administrator";
         String[] header = {"ID", "Username" , "Password"};
-        db.create("Administrator");        
-        db.addHeader("Administrator", header);
-        if(db.serach(username,"Administrator")){
-            if(db.serach(password, "Administrator")){
-                if(db.getRowNum(username) == db.getRowNum(password)){
+        db.create(filename);        
+        db.addHeader(filename, header);
+        if(db.serach(username,filename)){
+            if(db.readCell(db.getRowNum(username,filename), 2, "Administrator").equals(password)){
+                if(db.getRowNum(username,filename) == db.getRowNum(password,filename)){
                     return true;
                 }
-            }
+            } else System.out.println("password not correct !");
         }
         return false;
     }

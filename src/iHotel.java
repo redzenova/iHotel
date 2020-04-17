@@ -34,8 +34,12 @@ public class iHotel extends Application {
     private String username;
     private String password;
     
-    Stage window;
-    Database db = new Database();
+    private Stage window;
+    private Database db = new Database();
+    
+    private User user_page;
+    private Manager manager_page;
+    private Admin admin_page;
     
     public iHotel() {
     }
@@ -125,6 +129,8 @@ public class iHotel extends Application {
             try {
                 this.submit();
             } catch (IOException ex) {
+                Logger.getLogger(iHotel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
                 Logger.getLogger(iHotel.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -269,12 +275,18 @@ public class iHotel extends Application {
         window.show();
     }
    
-    private void submit() throws IOException{
+    private void submit() throws IOException, Exception{
         Authentication auth = new Authentication();
         if(auth.isUser(this.username, this.password)){
             System.out.println("Welcome User;");
+            window.close();
+            user_page = new User(this.username,this.password);
+            user_page.start(window);
         }else if(auth.isAdmin(this.username, this.password)){
             System.out.println("Welcome Admin");
-        }else System.out.println("Something wrong!");
+            window.close();
+            admin_page = new Admin(this.username,this.password);
+            admin_page.start(window);
+        }else System.out.println("Not have account !");
     }
 }

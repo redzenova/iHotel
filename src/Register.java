@@ -39,7 +39,8 @@ import javafx.stage.StageStyle;
  */
 public class Register extends Application {
 
-    Stage window;
+    private Stage window;
+    private Database db;
 
     //Class Variable
     private String firstName;
@@ -60,7 +61,7 @@ public class Register extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        Database db = new Database();
+        db = new Database();
         db.create(dbName);
         db.addHeader(dbName, header);
 
@@ -605,12 +606,10 @@ public class Register extends Application {
             try {
                 if (check.isValidEmail(s) && s != null && !check.isDupEmail(s, error2)) {
                     data.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #6FE7DE;");
-                }
-                else  try {
-                    if (check.isDupEmail(s, error2)){
+                } else  try {
+                    if (check.isDupEmail(s, error2)) {
                         data.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #FAACAC;");
-                    }
-                    else {
+                    } else {
                         error.setVisible(true);
                     }
                 } catch (IOException ex) {
