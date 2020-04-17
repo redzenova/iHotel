@@ -262,7 +262,7 @@ public class Register extends Application {
                 checkName(lastname_form, lastname_error);
                 checkPhone(phone_form, phone_error);
                 checkPhone(age_form, age_error);
-                checkEmail(email_form, email_invalid_error);
+                checkEmail(email_form, email_invalid_error, email_already_error);
 
                 this.Submit();
             } catch (IOException ex) {
@@ -513,7 +513,7 @@ public class Register extends Application {
         checkName(lastname_form, lastname_error);
         checkPhone(phone_form, phone_error);
         checkPhone(age_form, age_error);
-        checkEmail(email_form, email_invalid_error);
+        checkEmail(email_form, email_invalid_error, email_already_error);
 
         //[View] --show window
         rootPane.getChildren().addAll(regis_page_layout, form_layout);
@@ -576,22 +576,53 @@ public class Register extends Application {
         });
     }
 
-    private void checkEmail(TextField data, Label error) {
+    private void checkEmail(TextField data, Label error, Label error2) {
         data.setOnKeyReleased(e -> {
             String s = data.getText();
-            if (check.isValidEmail(s) && s != null) {
-                data.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #6FE7DE;");
-            } 
-            else {
-                error.setVisible(true);
+            try {
+                if (check.isValidEmail(s) && s != null && !check.isDupEmail(s, error2)) {
+                    data.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #6FE7DE;");
+                } else try {
+                    if (check.isDupEmail(s, error2)) {
+                        data.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #FAACAC;");
+                    } else {
+                        error.setVisible(true);
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                check.isDupEmail(s, error2);
+            } catch (IOException ex) {
+                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         data.setOnMouseExited(e -> {
             String s = data.getText();
-            if (check.isValidEmail(s) && s != null) {
-                data.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #6FE7DE;");
-            } else {
-                error.setVisible(true);
+            try {
+                if (check.isValidEmail(s) && s != null && !check.isDupEmail(s, error2)) {
+                    data.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #6FE7DE;");
+                }
+                else  try {
+                    if (check.isDupEmail(s, error2)){
+                        data.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #FAACAC;");
+                    }
+                    else {
+                        error.setVisible(true);
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                check.isDupEmail(s, error2);
+            } catch (IOException ex) {
+                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         data.setOnKeyTyped(e -> {
@@ -659,7 +690,7 @@ public class Register extends Application {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         launch(args);
     }
 }

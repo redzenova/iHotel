@@ -1,6 +1,7 @@
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -30,12 +31,16 @@ import javafx.stage.StageStyle;
  */
 public class iHotel extends Application {
 
+    private String username;
+    private String password;
+    
     Stage window;
-
+    Database db = new Database();
+    
     public iHotel() {
     }
     
-    public static void main2(String[] args) {
+    public static void main(String[] args) {
         launch(args);
     }
     
@@ -72,6 +77,12 @@ public class iHotel extends Application {
         mem_me.setScaleX(0.8);
         mem_me.setScaleY(0.8);
         
+        // Error Form 
+        //[Component] - Error --name
+        Label username_error = new Label("รูปแบบชื่อผู้ใช้งานไม่ถูกต้อง");
+        username_error.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 20));
+        username_error.setStyle("-fx-text-fill: #FF1919");
+        username_error.setVisible(false);
         
         //[Component] - Form Field 
         Label user_label = new Label("ชื่อผู้ใช้งาน");
@@ -86,11 +97,13 @@ public class iHotel extends Application {
         user_form.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 24));
         user_form.setStyle("-fx-background-radius: 13; -fx-font-size: 22;");
         user_form.setEffect(new DropShadow());
+        user_form.setPromptText("อีเมลหรือเบอร์โทรศัพท์");
         
         PasswordField pass_form = new PasswordField();
         pass_form.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
         pass_form.setStyle("-fx-background-radius: 13; -fx-font-size: 22;");
         pass_form.setEffect(new DropShadow());
+        pass_form.setPromptText("รหัสผ่าน");
         
         //====================|  Login [Button] setting |=========================
         Button login_bt = new Button("เข้าสู่ระบบ");
@@ -106,6 +119,14 @@ public class iHotel extends Application {
         //On mouse click
         login_bt.setOnMouseClicked(e -> {
                login_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #6FE7DE; -fx-text-fill: #ffffff");
+               this.username = user_form.getText();
+               this.password = pass_form.getText();
+               
+            try {
+                this.submit();
+            } catch (IOException ex) {
+                Logger.getLogger(iHotel.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         //On mouse idle
         login_bt.setOnMouseExited( e -> {
@@ -248,4 +269,12 @@ public class iHotel extends Application {
         window.show();
     }
    
+    private void submit() throws IOException{
+        Authentication auth = new Authentication();
+        if(auth.isUser(this.username, this.password)){
+            System.out.println("Welcome User;");
+        }else if(auth.isAdmin(this.username, this.password)){
+            System.out.println("Welcome Admin");
+        }else System.out.println("Something wrong!");
+    }
 }

@@ -14,7 +14,7 @@ import java.io.IOException;
 public class TestClass {
     public static void main2(String[] args) throws IOException {
        Database db = new Database();
-       if(db.serachEmail("raweeroj@everythink.dev")){
+       if(db.serach("raweeroj@everythink.dev","User")){
            System.out.println("Email is already !");
        }else {
            System.out.println("You can use email");

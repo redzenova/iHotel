@@ -1,6 +1,7 @@
 
 import java.io.IOException;
 import java.util.regex.Pattern;
+import javafx.scene.control.Label;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -36,12 +37,16 @@ public class Validate {
         return pat.matcher(email).matches();
     }
     
-        public boolean isDupEmail(String email) throws IOException {
+        public boolean isDupEmail(String email, Label error) throws IOException {
             Database db =new Database();
             
-            if(db.serachEmail(email)){
+            if(db.serach(email,"User")){
+                error.setVisible(true);
                 return true;
-            }else return false;
+            }else {
+                error.setVisible(false);
+                return false;
+            }
     }
     
     public boolean isPhoneNum(String message) {

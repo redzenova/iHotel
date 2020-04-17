@@ -103,6 +103,7 @@ public class Database {
         for (int i = 0; i < header.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(header[i]);
+
         }
 
         // Resize all columns to fit the content size
@@ -260,8 +261,35 @@ public class Database {
         }
     }
 
-    public boolean serachEmail(String email) throws FileNotFoundException, IOException {
-        int count = 0;
+    public boolean serach(String data, String filename) throws FileNotFoundException, IOException {
+
+        File excelFile = new File("src/db/"+filename+".xlsx");
+        FileInputStream fis = new FileInputStream(excelFile);
+
+        XSSFWorkbook workbook = new XSSFWorkbook(fis);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+
+        Iterator<Row> rowIt = sheet.iterator();
+
+        while (rowIt.hasNext()) {
+            Row row = rowIt.next();
+
+            Iterator<Cell> cellIterator = row.cellIterator();
+
+            while (cellIterator.hasNext()) {
+                Cell cell = cellIterator.next();
+                if (cell.toString().equals(data)) {
+                    return true;
+                }
+            }
+        }
+
+        workbook.close();
+        fis.close();
+        return false;
+    }
+
+    public int getRowNum(String data) throws FileNotFoundException, IOException {
 
         File excelFile = new File("src/db/User.xlsx");
         FileInputStream fis = new FileInputStream(excelFile);
@@ -278,15 +306,58 @@ public class Database {
 
             while (cellIterator.hasNext()) {
                 Cell cell = cellIterator.next();
-                if (cell.toString().equals(email)) {
-                    return true;
+                if (cell.toString().equals(data)) {
+                    return row.getRowNum();
                 }
             }
         }
 
         workbook.close();
         fis.close();
-        return false;
+        return 0;
+    }
+
+    public int getCellNum(String data) throws FileNotFoundException, IOException {
+
+        File excelFile = new File("src/db/User.xlsx");
+        FileInputStream fis = new FileInputStream(excelFile);
+
+        XSSFWorkbook workbook = new XSSFWorkbook(fis);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+
+        Iterator<Row> rowIt = sheet.iterator();
+
+        while (rowIt.hasNext()) {
+            Row row = rowIt.next();
+
+            Iterator<Cell> cellIterator = row.cellIterator();
+
+            while (cellIterator.hasNext()) {
+                Cell cell = cellIterator.next();
+                if (cell.toString().equals(data)) {
+                    return cell.getColumnIndex();
+                }
+            }
+        }
+
+        workbook.close();
+        fis.close();
+        return 0;
+    }
+
+    public void writeCell(String string, int rowNum, int collumNum, String filename) throws FileNotFoundException, IOException {
+        File excelFile = new File("src/db/" + filename + ".xlsx");
+        FileInputStream fis = new FileInputStream(excelFile);
+
+        XSSFWorkbook workbook = new XSSFWorkbook(fis);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+
+        Row row = sheet.createRow(rowNum);
+        Cell cell = row.createCell(collumNum);
+        cell.setCellValue(string);
+
+        workbook.close();
+        fis.close();
     }
 
 }

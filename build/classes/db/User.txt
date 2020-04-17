@@ -4,4 +4,5 @@ Id, Firstname, Lastname, Age, Gender, Email, Phone Number, Password, DataCreate,
 10003, กหกดกหด, กฟหกหฟก, 12, ชาย, rawer@jo.com, 00000, 123456, 43938.7758252662, 
 10004, dadwd, asdasd, 12, ชาย, dfsg@dfsf.ca, 12221, 123, 43938.8902865625, 
 10005, dawdad, asdasd, 12, ชาย, fsdf@fdg.rdrtg, 123123, 1234, 43938.911069953705, 
+10006, Raweeroj, Thongdee, 18, ชาย, iam@raweeroj.me, 0955553696, FF212224, 43938.99447322917, 
 
