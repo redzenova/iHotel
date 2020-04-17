@@ -58,7 +58,7 @@ public class Account {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public String getPhoneNumber() {

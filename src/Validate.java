@@ -1,4 +1,5 @@
 
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 /*
@@ -33,6 +34,14 @@ public class Validate {
             return false;
         }
         return pat.matcher(email).matches();
+    }
+    
+        public boolean isDupEmail(String email) throws IOException {
+            Database db =new Database();
+            
+            if(db.serachEmail(email)){
+                return true;
+            }else return false;
     }
     
     public boolean isPhoneNum(String message) {

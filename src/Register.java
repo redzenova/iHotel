@@ -49,13 +49,13 @@ public class Register extends Application {
     private String email;
     private String phoneNumber;
     private String password;
+    private boolean condition;
     private boolean isSame;
 
     private String dbName = "User";
     private String[] header = {"Id", "Firstname", "Lastname", "Age", "Gender", "Email", "Phone Number", "Password", "DataCreate"};
 
     Validate check = new Validate();
-    AlertBox alert_box = new AlertBox();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -256,6 +256,13 @@ public class Register extends Application {
                 this.email = email_form.getText();
                 this.phoneNumber = phone_form.getText();
                 this.password = pass_form.getText();
+                this.condition = condit_box.isSelected();
+
+                checkName(name_form, name_error);
+                checkName(lastname_form, lastname_error);
+                checkPhone(phone_form, phone_error);
+                checkPhone(age_form, age_error);
+                checkEmail(email_form, email_invalid_error);
 
                 this.Submit();
             } catch (IOException ex) {
@@ -518,7 +525,7 @@ public class Register extends Application {
     private void checkName(TextField data, Label error) {
         data.setOnKeyReleased(e -> {
             String s = data.getText();
-            if (check.isName(s)) {
+            if (check.isName(s) && s != null) {
                 data.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #6FE7DE;");
             } else {
                 error.setVisible(true);
@@ -526,7 +533,7 @@ public class Register extends Application {
         });
         data.setOnMouseExited(e -> {
             String s = data.getText();
-            if (check.isName(s)) {
+            if (check.isName(s) && s != null) {
                 data.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #6FE7DE;");
             } else {
                 error.setVisible(true);
@@ -545,7 +552,7 @@ public class Register extends Application {
     private void checkPhone(TextField data, Label error) {
         data.setOnKeyReleased(e -> {
             String s = data.getText();
-            if (check.isPhoneNum(s)) {
+            if (check.isPhoneNum(s) && s != null) {
                 data.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #6FE7DE;");
             } else {
                 error.setVisible(true);
@@ -553,7 +560,7 @@ public class Register extends Application {
         });
         data.setOnMouseExited(e -> {
             String s = data.getText();
-            if (check.isPhoneNum(s)) {
+            if (check.isPhoneNum(s) && s != null) {
                 data.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #6FE7DE;");
             } else {
                 error.setVisible(true);
@@ -572,15 +579,16 @@ public class Register extends Application {
     private void checkEmail(TextField data, Label error) {
         data.setOnKeyReleased(e -> {
             String s = data.getText();
-            if (check.isValidEmail(s)) {
+            if (check.isValidEmail(s) && s != null) {
                 data.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #6FE7DE;");
-            } else {
+            } 
+            else {
                 error.setVisible(true);
             }
         });
         data.setOnMouseExited(e -> {
             String s = data.getText();
-            if (check.isValidEmail(s)) {
+            if (check.isValidEmail(s) && s != null) {
                 data.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #6FE7DE;");
             } else {
                 error.setVisible(true);
@@ -599,7 +607,7 @@ public class Register extends Application {
     private boolean checkPass(PasswordField pass, PasswordField repass, Label error) {
         String repas = repass.getText();
         String pas = pass.getText();
-        if (repas.equals(pas)) {
+        if (repas.equals(pas) && pas != null) {
             error.setVisible(false);
             pass.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #6FE7DE;");
             repass.setStyle("-fx-background-radius: 13; -fx-font-size: 22; -fx-background-color: #6FE7DE;");
@@ -619,27 +627,29 @@ public class Register extends Application {
                     if (check.isValidEmail(this.email)) {
                         if (check.isPhoneNum(this.phoneNumber)) {
                             if (isSame) {
-                                Alert alert = new Alert(AlertType.CONFIRMATION);
-                                alert.setTitle("แบบฟอร์มข้อมูลถูกตรวจสอบแล้ว");
-                                alert.setHeaderText("ข้อมูลของคุณถูกต้อง !");
-                                alert.setContentText("ยืนยันการสมัคร ?");
+                                if (this.condition) {
+                                    Alert alert = new Alert(AlertType.CONFIRMATION);
+                                    alert.setTitle("แบบฟอร์มข้อมูลถูกตรวจสอบแล้ว");
+                                    alert.setHeaderText("ข้อมูลของคุณถูกต้อง !");
+                                    alert.setContentText("ยืนยันการสมัคร ?");
 
-                                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-                                stage.getIcons().add(new Image(new FileInputStream(new File("src/img/icon.png"))));
+                                    Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                                    stage.getIcons().add(new Image(new FileInputStream(new File("src/img/icon.png"))));
 
-                                Optional<ButtonType> result = alert.showAndWait();
-                                if (result.get() == ButtonType.OK) {
-                                    Database db = new Database();
-                                    Account acc = new Account(this.firstName, this.lastName, this.age, this.gender, this.email, this.phoneNumber, this.password);
-                                    db.addAccount(dbName, header.length, acc);
-                                    System.out.println("Add User Seccess !");
-                                    db.toTextFile(dbName);
+                                    Optional<ButtonType> result = alert.showAndWait();
+                                    if (result.get() == ButtonType.OK) {
+                                        Database db = new Database();
+                                        Account acc = new Account(this.firstName, this.lastName, this.age, this.gender, this.email, this.phoneNumber, this.password);
+                                        db.addAccount(dbName, header.length, acc);
+                                        System.out.println("Add User Seccess !");
+                                        db.toTextFile(dbName);
 
-                                    iHotel ihotel_page = new iHotel();
-                                    ihotel_page.start(window);
+                                        iHotel ihotel_page = new iHotel();
+                                        ihotel_page.start(window);
 
-                                } else {
-                                    alert.close();
+                                    } else {
+                                        alert.close();
+                                    }
                                 }
                             }
                         }

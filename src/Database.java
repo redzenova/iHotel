@@ -38,10 +38,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class Database {
 
-    public static void main2(String[] args) throws FileNotFoundException, IOException {
+    public void read(String name) throws FileNotFoundException, IOException {
 
         //Set name of file xlsx
-        String name = "User";
         File excelFile = new File("src/db/" + name + ".xlsx");
         FileInputStream fis = new FileInputStream(excelFile);
 
@@ -141,7 +140,7 @@ public class Database {
             row.createCell(2).setCellValue(a.getLastName());
             row.createCell(3).setCellValue(a.getAge());
             row.createCell(4).setCellValue(a.getGender());
-            row.createCell(5).setCellValue(a.getEmail());
+            row.createCell(5).setCellValue(String.valueOf(a.getEmail()));
             row.createCell(6).setCellValue(a.getPhoneNumber());
             row.createCell(7).setCellValue(a.getPassword());
             row.createCell(8).setCellValue(a.getDataCreate());
@@ -241,7 +240,7 @@ public class Database {
         File excelFile = new File("src/db/" + excelname + ".xlsx");
         FileInputStream fileInput = new FileInputStream(excelFile);
         Workbook wb = new XSSFWorkbook(fileInput);
-        
+
         DataFormatter formatter = new DataFormatter();
         PrintStream out = new PrintStream(new FileOutputStream("src/db/" + csvname + ".csv"),
                 true, "UTF-8");
@@ -260,6 +259,34 @@ public class Database {
             }
         }
     }
-    
-    
+
+    public boolean serachEmail(String email) throws FileNotFoundException, IOException {
+        int count = 0;
+
+        File excelFile = new File("src/db/User.xlsx");
+        FileInputStream fis = new FileInputStream(excelFile);
+
+        XSSFWorkbook workbook = new XSSFWorkbook(fis);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+
+        Iterator<Row> rowIt = sheet.iterator();
+
+        while (rowIt.hasNext()) {
+            Row row = rowIt.next();
+
+            Iterator<Cell> cellIterator = row.cellIterator();
+
+            while (cellIterator.hasNext()) {
+                Cell cell = cellIterator.next();
+                if (cell.toString().equals(email)) {
+                    return true;
+                }
+            }
+        }
+
+        workbook.close();
+        fis.close();
+        return false;
+    }
+
 }
