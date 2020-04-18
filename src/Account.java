@@ -1,5 +1,8 @@
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /*
@@ -21,7 +24,7 @@ public class Account {
     private String email;
     private String phoneNumber;
     private String password;
-    private Date dataCreate;
+    private String dataCreate;
     private int numOfAccount = 0;
 
     public Account(String firstName, String lastName, String age, String gender, String email, String phoneNumber, String password) {
@@ -33,7 +36,12 @@ public class Account {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.dataCreate = new Date();
+        
+        Date date = Calendar.getInstance().getTime();  
+        DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");  
+        String strDate = dateFormat.format(date); 
+        
+        this.dataCreate = strDate;
         numOfAccount++;
     }
     
@@ -69,7 +77,7 @@ public class Account {
         return password;
     }
 
-    public Date getDataCreate() {
+    public String getDataCreate() {
         return dataCreate;
     }
     
