@@ -1,6 +1,7 @@
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -23,14 +24,23 @@ public class Admin extends Application {
 
     private String username;
     private String password;
+
+    private String filename = "Administrator";
+    private String[] header = {"ID", "Username", "Password"};
+
     private Stage window;
     private iHotel main_page;
+    private Database db;
 
     public static void main2(String[] args) {
         launch(args);
     }
 
-    public Admin() {
+    public Admin() throws IOException {
+        db = new Database();
+        if (db.create(filename)) {
+            db.addHeader(filename, header);
+        }
     }
 
     public Admin(String username, String password) {
