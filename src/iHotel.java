@@ -33,6 +33,9 @@ public class iHotel extends Application {
 
     private String username;
     private String password;
+    private String mem_username;
+    private String mem_password;
+    private boolean mem_status;
     
     private Stage window;
     private Database db = new Database();
@@ -102,6 +105,8 @@ public class iHotel extends Application {
         user_form.setStyle("-fx-background-radius: 13; -fx-font-size: 22;");
         user_form.setEffect(new DropShadow());
         user_form.setPromptText("อีเมลหรือเบอร์โทรศัพท์");
+        user_form.setText("Redzenova");
+        user_form.clear();
         
         PasswordField pass_form = new PasswordField();
         pass_form.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
@@ -125,6 +130,10 @@ public class iHotel extends Application {
                login_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #6FE7DE; -fx-text-fill: #ffffff");
                this.username = user_form.getText();
                this.password = pass_form.getText();
+               if(mem_me.isSelected()){
+                   this.mem_username = this.username;
+                   this.mem_password = this.password;
+               }
                
             try {
                 this.submit();

@@ -9,7 +9,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.effect.DropShadow;
@@ -40,7 +42,7 @@ public class User extends Application {
     private Stage window;
     private iHotel main_page;
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         launch(args);
     }
 
@@ -65,6 +67,9 @@ public class User extends Application {
         ImageView logo = new ImageView(new Image(new FileInputStream(new File("src/img/logo-s.png"))));
         logo.setScaleX(0.3);
         logo.setScaleY(0.3);
+
+        //[Component] - Logo
+        ImageView image = new ImageView(new Image(new FileInputStream(new File("src/img/ce club.jpg"))));
 
         //[Component] - FormBox
         Rectangle box = new Rectangle(400, 860);
@@ -154,7 +159,7 @@ public class User extends Application {
         });
         //On mouse hover
         booking_bt.setOnMouseEntered(e -> {
-            booking_bt.setStyle(" -fx-background-color: #005082; -fx-text-fill: #fff000");
+            booking_bt.setStyle(" -fx-background-color: #0081D0; -fx-text-fill: #fff000");
         });
         //On mouse click
         booking_bt.setOnMouseClicked(e -> {
@@ -180,7 +185,7 @@ public class User extends Application {
         });
         //On mouse hover
         info_bt.setOnMouseEntered(e -> {
-            info_bt.setStyle(" -fx-background-color: #00A8CC; -fx-text-fill: #fff000");
+            info_bt.setStyle(" -fx-background-color: #09D6FF; -fx-text-fill: #fff000");
         });
         //On mouse click
         info_bt.setOnMouseClicked(e -> {
@@ -205,7 +210,7 @@ public class User extends Application {
         });
         //On mouse hover
         status_bt.setOnMouseEntered(e -> {
-            status_bt.setStyle(" -fx-background-color: #1EB2A6; -fx-text-fill: #fff000");
+            status_bt.setStyle(" -fx-background-color: #30DCD0; -fx-text-fill: #fff000");
         });
         //On mouse click
         status_bt.setOnMouseClicked(e -> {

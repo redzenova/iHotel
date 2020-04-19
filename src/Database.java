@@ -73,19 +73,21 @@ public class Database {
 
     }
 
-    public void create(String filename) throws FileNotFoundException, IOException {
+    public boolean create(String filename) throws FileNotFoundException, IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet(filename);
 
         File excelFile = new File("src/db/" + filename + ".xlsx");
         if (excelFile.exists()) {
             System.out.println("File exist");
+            return false;
         } else {
             // Write the output to a file
             FileOutputStream fileOut = new FileOutputStream("src/db/" + filename + ".xlsx");
             workbook.write(fileOut);
             fileOut.close();
             System.out.println("Create File Seccess !");
+            return true;
         }
     }
 
