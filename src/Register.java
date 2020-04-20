@@ -199,6 +199,7 @@ public class Register extends Application {
         gender_form.setStyle("-fx-background-radius: 13; -fx-font-size: 22;");
         gender_form.setEffect(new DropShadow());
         gender_form.getItems().addAll("ชาย", "หญิง", "ไม่ระบุ");
+        gender_form.setValue("ไม่ระบุ");
 
         //[Component] - Form Field --TextField-email
         TextField email_form = new TextField();

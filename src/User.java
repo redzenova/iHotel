@@ -10,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
@@ -20,6 +21,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -116,6 +118,71 @@ public class User extends Application {
         status_bg.setFill(Color.web("#1EB2A6"));
         status_bg.setEffect(new DropShadow());
         status_bg.setVisible(false);
+
+        //[Component] - Profile editor
+        Rectangle profile_bg = new Rectangle(400, 860);
+        profile_bg.setFill(Color.web("#ffffff"));
+        profile_bg.setVisible(false);
+
+        Label profile_name_label = new Label("ชื่อ");
+        profile_name_label.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
+        profile_name_label.setStyle("-fx-text-fill: #000000");
+        profile_name_label.setVisible(false);
+
+        Label profile_lastname_label = new Label("นามสกุล");
+        profile_lastname_label.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
+        profile_lastname_label.setStyle("-fx-text-fill: #000000");
+        profile_lastname_label.setVisible(false);
+
+        Label profile_age_label = new Label("อายุ");
+        profile_age_label.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
+        profile_age_label.setStyle("-fx-text-fill: #000000");
+        profile_age_label.setVisible(false);
+
+        Label profile_gender_label = new Label("เพศ");
+        profile_gender_label.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
+        profile_gender_label.setStyle("-fx-text-fill: #000000");
+        profile_gender_label.setVisible(false);
+
+        Label profile_email_label = new Label("อีเมล");
+        profile_email_label.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
+        profile_email_label.setStyle("-fx-text-fill: #000000");
+        profile_email_label.setVisible(false);
+
+        Label profile_phone_label = new Label("เบอร์โทร");
+        profile_phone_label.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
+        profile_phone_label.setStyle("-fx-text-fill: #000000");
+        profile_phone_label.setVisible(false);
+
+        TextField profile_name = new TextField();
+        profile_name.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
+        profile_name.setStyle("-fx-text-fill: #000000");
+        profile_name.setVisible(false);
+
+        TextField profile_lastname = new TextField();
+        profile_lastname.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
+        profile_lastname.setStyle("-fx-text-fill: #000000");
+        profile_lastname.setVisible(false);
+
+        TextField profile_age = new TextField();
+        profile_age.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
+        profile_age.setStyle("-fx-text-fill: #000000");
+        profile_age.setVisible(false);
+
+        ChoiceBox<String> profile_gender = new ChoiceBox<>();
+        profile_gender.setStyle("-fx-font-size: 22;");
+        profile_gender.getItems().addAll("ชาย", "หญิง", "ไม่ระบุ");
+        profile_gender.setVisible(false);
+
+        TextField profile_email = new TextField();
+        profile_email.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
+        profile_email.setStyle("-fx-text-fill: #000000");
+        profile_email.setVisible(false);
+
+        TextField profile_phone = new TextField();
+        profile_phone.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
+        profile_phone.setStyle("-fx-text-fill: #000000");
+        profile_phone.setVisible(false);
 
         //[Component] - Info Tab 
         //===============================[ Info ]==============================//
@@ -440,6 +507,42 @@ public class User extends Application {
         VBox searchRoom = new VBox(tableView);
         searchRoom.setVisible(true);
 
+        //==============================================================
+        //[Component] - Status Tab 
+        //===========================[ Status ]===========================//
+        Label history_booking = new Label("ประวัติการจอง");
+        history_booking.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 28));
+        history_booking.setStyle("-fx-text-fill: #ffffff");
+        history_booking.setVisible(false);
+
+        TableView tableView2 = new TableView();
+
+        TableColumn C1 = new TableColumn<>("รายการ");
+        C1.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+
+        TableColumn C2 = new TableColumn<>("ลักษณะห้องพัก");
+        C2.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+
+        TableColumn C3 = new TableColumn<>("รูปแบบ");
+        C3.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+
+        TableColumn C4 = new TableColumn<>("ราตา ต่อห้อง ต่อคืน");
+        C4.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+
+        TableColumn C5 = new TableColumn<>("ห้อง");
+        C5.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+
+        TableColumn C6 = new TableColumn<>("จองเลย");
+
+        tableView2.getColumns().add(C1);
+        tableView2.getColumns().add(C2);
+        tableView2.getColumns().add(C3);
+        tableView2.getColumns().add(C4);
+        tableView2.getColumns().add(C5);
+        tableView2.getColumns().add(C6);
+        VBox booking_status = new VBox(tableView2);
+        booking_status.setVisible(false);
+
         //===================|  Logout [Button] setting |=========================
         Button logout_bt = new Button("ออกจากระบบ");
         logout_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 26));
@@ -465,28 +568,6 @@ public class User extends Application {
             } catch (Exception ex) {
                 Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
             }
-        });
-        //============================================================
-
-        //===================|  Profile [Button] setting |=========================
-        Button profile_bt = new Button("บัญชีผู้ใช้งาน");
-        profile_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 26));
-        profile_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #FFA34D; -fx-text-fill: #000000");
-        profile_bt.setDisable(false);
-        //On mouse idle
-        profile_bt.setOnMouseExited(e -> {
-            profile_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #FFA34D; -fx-text-fill: #000000");
-            profile_bt.setEffect(null);
-        });
-        //On mouse hover
-        profile_bt.setOnMouseEntered(e -> {
-            profile_bt.setStyle(" -fx-background-radius: 30; -fx-background-color: #FFA34D; -fx-text-fill: #ffffff");
-            profile_bt.setEffect(new DropShadow());
-        });
-        //On mouse click
-        profile_bt.setOnMouseClicked(e -> {
-            profile_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #FFC997; -fx-text-fill: #ffffff");
-
         });
         //============================================================
 
@@ -531,87 +612,6 @@ public class User extends Application {
         Booking_bt.setOnMouseClicked(e -> {
             Booking_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFC997; -fx-text-fill: #ffffff");
 
-        });
-        //============================================================
-
-        //===================|  Booking [Button] setting |=========================
-        Button booking_bt = new Button("จองห้องพัก");
-        booking_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 26));
-        booking_bt.setStyle("-fx-background-color: #005082; -fx-text-fill: #ffffff");
-        booking_bt.setDisable(false);
-        //On mouse idle
-        booking_bt.setOnMouseExited(e -> {
-            booking_bt.setStyle("-fx-background-color: #005082; -fx-text-fill: #ffffff");
-            booking_bt.setEffect(null);
-
-        });
-        //On mouse hover
-        booking_bt.setOnMouseEntered(e -> {
-            booking_bt.setStyle(" -fx-background-color: #0081D0; -fx-text-fill: #fff000");
-        });
-        //On mouse click
-        booking_bt.setOnMouseClicked(e -> {
-            booking_bt.setStyle(" -fx-background-color: #005082; -fx-text-fill: #ffffff");
-
-            searchRoom.setVisible(true);
-            scrollPaneDetails.setVisible(false);
-
-            searchRoom.setVisible(true);
-            serch_room.setVisible(true);
-            check_in_lable.setVisible(true);
-            check_in_date.setVisible(true);
-            check_out_lable.setVisible(true);
-            check_out_date.setVisible(true);
-            adult_num.setVisible(true);
-            young_num.setVisible(true);
-            adult_label.setVisible(true);
-            young_label.setVisible(true);
-            numRoom_label.setVisible(true);
-            room_num.setVisible(true);
-            Search_bt.setVisible(true);
-            add_on_label.setVisible(true);
-            breakfast.setVisible(true);
-            dinner.setVisible(true);
-            Booking_bt.setVisible(true);
-            summery_price.setVisible(true);
-            summery_room_price.setVisible(true);
-            vat_price.setVisible(true);
-
-            booking_bg.setVisible(true);
-            info_bg.setVisible(false);
-            status_bg.setVisible(false);
-            booking_bt.setEffect(new DropShadow());
-
-        });
-        //============================================================
-
-        //===================|  Info [Button] setting |=========================
-        Button info_bt = new Button("ข้อมูลห้องพัก");
-        info_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 26));
-        info_bt.setStyle("-fx-background-color: #00A8CC; -fx-text-fill: #ffffff");
-        info_bt.setDisable(false);
-        //On mouse idle
-        info_bt.setOnMouseExited(e -> {
-            info_bt.setStyle("-fx-background-color: #00A8CC; -fx-text-fill: #ffffff");
-            info_bt.setEffect(null);
-
-        });
-        //On mouse hover
-        info_bt.setOnMouseEntered(e -> {
-            info_bt.setStyle(" -fx-background-color: #09D6FF; -fx-text-fill: #fff000");
-        });
-        //On mouse click
-        info_bt.setOnMouseClicked(e -> {
-            info_bt.setStyle(" -fx-background-color: #00A8CC; -fx-text-fill: #ffffff");
-
-            searchRoom.setVisible(false);
-            scrollPaneDetails.setVisible(true);
-            scrollPaneDetails.setVvalue(0);
-
-            booking_bg.setVisible(false);
-            info_bg.setVisible(true);
-            status_bg.setVisible(false);
-            info_bt.setEffect(new DropShadow());
         });
         //============================================================
 
@@ -660,10 +660,193 @@ public class User extends Application {
 
             booking_bg.setVisible(false);
             info_bg.setVisible(false);
+            history_booking.setVisible(true);
+            booking_status.setVisible(true);
             status_bg.setVisible(true);
             status_bt.setEffect(new DropShadow());
         });
         //============================================================
+
+        //===================|  Booking [Button] setting |=========================
+        Button booking_bt = new Button("จองห้องพัก");
+        booking_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 26));
+        booking_bt.setStyle("-fx-background-color: #005082; -fx-text-fill: #ffffff");
+        booking_bt.setDisable(false);
+        //On mouse idle
+        booking_bt.setOnMouseExited(e -> {
+            booking_bt.setStyle("-fx-background-color: #005082; -fx-text-fill: #ffffff");
+            booking_bt.setEffect(null);
+
+        });
+        //On mouse hover
+        booking_bt.setOnMouseEntered(e -> {
+            booking_bt.setStyle(" -fx-background-color: #0081D0; -fx-text-fill: #fff000");
+        });
+        //On mouse click
+        booking_bt.setOnMouseClicked(e -> {
+            booking_bt.setStyle(" -fx-background-color: #005082; -fx-text-fill: #ffffff");
+
+            searchRoom.setVisible(true);
+            scrollPaneDetails.setVisible(false);
+
+            searchRoom.setVisible(true);
+            serch_room.setVisible(true);
+            check_in_lable.setVisible(true);
+            check_in_date.setVisible(true);
+            check_out_lable.setVisible(true);
+            check_out_date.setVisible(true);
+            adult_num.setVisible(true);
+            young_num.setVisible(true);
+            adult_label.setVisible(true);
+            young_label.setVisible(true);
+            numRoom_label.setVisible(true);
+            room_num.setVisible(true);
+            Search_bt.setVisible(true);
+            add_on_label.setVisible(true);
+            breakfast.setVisible(true);
+            dinner.setVisible(true);
+            Booking_bt.setVisible(true);
+            summery_price.setVisible(true);
+            summery_room_price.setVisible(true);
+            vat_price.setVisible(true);
+
+            history_booking.setVisible(false);
+            booking_status.setVisible(false);
+            booking_bg.setVisible(true);
+            info_bg.setVisible(false);
+            status_bg.setVisible(false);
+            booking_bt.setEffect(new DropShadow());
+
+        });
+        //============================================================
+
+        //===================|  Info [Button] setting |=========================
+        Button info_bt = new Button("ข้อมูลห้องพัก");
+        info_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 26));
+        info_bt.setStyle("-fx-background-color: #00A8CC; -fx-text-fill: #ffffff");
+        info_bt.setDisable(false);
+        //On mouse idle
+        info_bt.setOnMouseExited(e -> {
+            info_bt.setStyle("-fx-background-color: #00A8CC; -fx-text-fill: #ffffff");
+            info_bt.setEffect(null);
+        });
+        //On mouse hover
+        info_bt.setOnMouseEntered(e -> {
+            info_bt.setStyle(" -fx-background-color: #09D6FF; -fx-text-fill: #fff000");
+        });
+        //On mouse click
+        info_bt.setOnMouseClicked(e -> {
+            info_bt.setStyle(" -fx-background-color: #00A8CC; -fx-text-fill: #ffffff");
+
+            searchRoom.setVisible(false);
+            scrollPaneDetails.setVisible(true);
+            scrollPaneDetails.setVvalue(0);
+
+            history_booking.setVisible(false);
+            booking_status.setVisible(false);
+
+            booking_bg.setVisible(false);
+            info_bg.setVisible(true);
+            status_bg.setVisible(false);
+            info_bt.setEffect(new DropShadow());
+        });
+        //============================================================
+
+        //===================|  Save [Button] setting |=========================
+        Button save_bt = new Button("บันทึก");
+        save_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 26));
+        save_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #1EB2A6; -fx-text-fill: #000000");
+        save_bt.setVisible(false);
+        //On mouse idle
+        save_bt.setOnMouseExited(e -> {
+            save_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #1EB2A6; -fx-text-fill: #000000");
+            save_bt.setEffect(null);
+        });
+        //On mouse hover
+        save_bt.setOnMouseEntered(e -> {
+            save_bt.setStyle(" -fx-background-radius: 30; -fx-background-color: #30DCD0; -fx-text-fill: #ffffff");
+            save_bt.setEffect(new DropShadow());
+        });
+        //On mouse click
+        save_bt.setOnMouseClicked(e -> {
+            save_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #1EB2A6; -fx-text-fill: #ffffff");
+
+        });
+
+        //===================|  Back Home [Button] setting |=========================
+        Button back_bt = new Button("กลับ");
+        back_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 26));
+        back_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #F67575; -fx-text-fill: #000000");
+        back_bt.setVisible(false);
+        //On mouse idle
+        back_bt.setOnMouseExited(e -> {
+            back_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #F67575; -fx-text-fill: #000000");
+            back_bt.setEffect(null);
+        });
+        //On mouse hover
+        back_bt.setOnMouseEntered(e -> {
+            back_bt.setStyle(" -fx-background-radius: 30; -fx-background-color: #FAACAC; -fx-text-fill: #ffffff");
+            back_bt.setEffect(new DropShadow());
+        });
+        //On mouse click
+        back_bt.setOnMouseClicked(e -> {
+            back_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #F67575; -fx-text-fill: #ffffff");
+            back_bt.setVisible(false);
+            profile_bg.setVisible(false);
+            save_bt.setVisible(false);
+
+            profile_name_label.setVisible(false);
+            profile_name.setVisible(false);
+            profile_lastname_label.setVisible(false);
+            profile_lastname.setVisible(false);
+            profile_age_label.setVisible(false);
+            profile_age.setVisible(false);
+            profile_gender_label.setVisible(false);
+            profile_gender.setVisible(false);
+            profile_email_label.setVisible(false);
+            profile_email.setVisible(false);
+            profile_phone_label.setVisible(false);
+            profile_phone.setVisible(false);
+
+        });
+        //=============================================================
+
+        //===================|  Profile [Button] setting |=========================
+        Button profile_bt = new Button("บัญชีผู้ใช้งาน");
+        profile_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 26));
+        profile_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #FFA34D; -fx-text-fill: #000000");
+        profile_bt.setDisable(false);
+        //On mouse idle
+        profile_bt.setOnMouseExited(e -> {
+            profile_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #FFA34D; -fx-text-fill: #000000");
+            profile_bt.setEffect(null);
+        });
+        //On mouse hover
+        profile_bt.setOnMouseEntered(e -> {
+            profile_bt.setStyle(" -fx-background-radius: 30; -fx-background-color: #FFA34D; -fx-text-fill: #ffffff");
+            profile_bt.setEffect(new DropShadow());
+        });
+        //On mouse click
+        profile_bt.setOnMouseClicked(e -> {
+            profile_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #FFC997; -fx-text-fill: #ffffff");
+            back_bt.setVisible(true);
+            profile_bg.setVisible(true);
+            save_bt.setVisible(true);
+
+            profile_name_label.setVisible(true);
+            profile_name.setVisible(true);
+            profile_lastname_label.setVisible(true);
+            profile_lastname.setVisible(true);
+            profile_age_label.setVisible(true);
+            profile_age.setVisible(true);
+            profile_gender_label.setVisible(true);
+            profile_gender.setVisible(true);
+            profile_email_label.setVisible(true);
+            profile_email.setVisible(true);
+            profile_phone_label.setVisible(true);
+            profile_phone.setVisible(true);
+
+        });
 
         //[Pane Setting]
         StackPane rootPane = new StackPane();
@@ -691,7 +874,7 @@ public class User extends Application {
         AnchorPane.setRightAnchor(profile_bt, 1080.0);
         AnchorPane.setBottomAnchor(profile_bt, 190.0);
 
-        // Anchor to Welcime [Label]
+        // Anchor to Welcome [Label]
         AnchorPane.setTopAnchor(welcome_label, 60.0);
         AnchorPane.setLeftAnchor(welcome_label, 80.0);
         AnchorPane.setRightAnchor(welcome_label, 1080.0);
@@ -865,12 +1048,117 @@ public class User extends Application {
         AnchorPane.setRightAnchor(summery_price, 100.0);
         AnchorPane.setBottomAnchor(summery_price, 240.0);
 
+        // Anchor to Status Label [Status-TAB]
+        AnchorPane.setTopAnchor(history_booking, 80.0);
+        AnchorPane.setLeftAnchor(history_booking, 510.0);
+        AnchorPane.setRightAnchor(history_booking, 500.0);
+        AnchorPane.setBottomAnchor(history_booking, 850.0);
+
+        // Anchor to Booking Status [Status-TAB]
+        AnchorPane.setTopAnchor(booking_status, 180.0);
+        AnchorPane.setLeftAnchor(booking_status, 500.0);
+        AnchorPane.setRightAnchor(booking_status, 80.0);
+        AnchorPane.setBottomAnchor(booking_status, 500.0);
+
+        //[AnchorPane-Edit Profile] Profile - background
+        AnchorPane.setTopAnchor(profile_bg, 100.0);
+        AnchorPane.setLeftAnchor(profile_bg, 50.0);
+        AnchorPane.setRightAnchor(profile_bg, 100.0);
+        AnchorPane.setBottomAnchor(profile_bg, 100.0);
+
+        //[AnchorPane-Edit Profile] Profile - back button
+        AnchorPane.setTopAnchor(back_bt, 880.0);
+        AnchorPane.setLeftAnchor(back_bt, 80.0);
+        AnchorPane.setRightAnchor(back_bt, 1080.0);
+        AnchorPane.setBottomAnchor(back_bt, 120.0);
+
+        //[AnchorPane-Edit Profile] Profile - save button
+        AnchorPane.setTopAnchor(save_bt, 810.0);
+        AnchorPane.setLeftAnchor(save_bt, 80.0);
+        AnchorPane.setRightAnchor(save_bt, 1080.0);
+        AnchorPane.setBottomAnchor(save_bt, 190.0);
+
+        //[AnchorPane-Edit Profile] Profile - profile_name_label
+        AnchorPane.setTopAnchor(profile_name_label, 80.0);
+        AnchorPane.setLeftAnchor(profile_name_label, 95.0);
+        AnchorPane.setRightAnchor(profile_name_label, 800.0);
+        AnchorPane.setBottomAnchor(profile_name_label, 850.0);
+
+        //[AnchorPane-Edit Profile] Profile - profile_name
+        AnchorPane.setTopAnchor(profile_name, 120.0);
+        AnchorPane.setLeftAnchor(profile_name, 150.0);
+        AnchorPane.setRightAnchor(profile_name, 1080.0);
+        AnchorPane.setBottomAnchor(profile_name, 890.0);
+
+        //[AnchorPane-Edit Profile] Profile - profile_lastname_label
+        AnchorPane.setTopAnchor(profile_lastname_label, 190.0);
+        AnchorPane.setLeftAnchor(profile_lastname_label, 80.0);
+        AnchorPane.setRightAnchor(profile_lastname_label, 800.0);
+        AnchorPane.setBottomAnchor(profile_lastname_label, 840.0);
+
+        //[AnchorPane-Edit Profile] Profile - profile_lastname
+        AnchorPane.setTopAnchor(profile_lastname, 180.0);
+        AnchorPane.setLeftAnchor(profile_lastname, 150.0);
+        AnchorPane.setRightAnchor(profile_lastname, 1080.0);
+        AnchorPane.setBottomAnchor(profile_lastname, 830.0);
+
+        //[AnchorPane-Edit Profile] Profile - profile_age_label
+        AnchorPane.setTopAnchor(profile_age_label, 240.0);
+        AnchorPane.setLeftAnchor(profile_age_label, 90.0);
+        AnchorPane.setRightAnchor(profile_age_label, 800.0);
+        AnchorPane.setBottomAnchor(profile_age_label, 760.0);
+
+        //[AnchorPane-Edit Profile] Profile - profile_age
+        AnchorPane.setTopAnchor(profile_age, 240.0);
+        AnchorPane.setLeftAnchor(profile_age, 150.0);
+        AnchorPane.setRightAnchor(profile_age, 1080.0);
+        AnchorPane.setBottomAnchor(profile_age, 770.0);
+
+        //[AnchorPane-Edit Profile] Profile - profile_gender_label
+        AnchorPane.setTopAnchor(profile_gender_label, 300.0);
+        AnchorPane.setLeftAnchor(profile_gender_label, 90.0);
+        AnchorPane.setRightAnchor(profile_gender_label, 800.0);
+        AnchorPane.setBottomAnchor(profile_gender_label, 710.0);
+
+        //[AnchorPane-Edit Profile] Profile - profile_gender
+        AnchorPane.setTopAnchor(profile_gender, 300.0);
+        AnchorPane.setLeftAnchor(profile_gender, 150.0);
+        AnchorPane.setRightAnchor(profile_gender, 1080.0);
+        AnchorPane.setBottomAnchor(profile_gender, 710.0);
+
+        //[AnchorPane-Edit Profile] Profile - profile_email_label
+        AnchorPane.setTopAnchor(profile_email_label, 350.0);
+        AnchorPane.setLeftAnchor(profile_email_label, 90.0);
+        AnchorPane.setRightAnchor(profile_email_label, 800.0);
+        AnchorPane.setBottomAnchor(profile_email_label, 640.0);
+
+        //[AnchorPane-Edit Profile] Profile - profile_email
+        AnchorPane.setTopAnchor(profile_email, 360.0);
+        AnchorPane.setLeftAnchor(profile_email, 150.0);
+        AnchorPane.setRightAnchor(profile_email, 1080.0);
+        AnchorPane.setBottomAnchor(profile_email, 650.0);
+
+        //[AnchorPane-Edit Profile] Profile - profile_phone_label
+        AnchorPane.setTopAnchor(profile_phone_label, 420.0);
+        AnchorPane.setLeftAnchor(profile_phone_label, 80.0);
+        AnchorPane.setRightAnchor(profile_phone_label, 800.0);
+        AnchorPane.setBottomAnchor(profile_phone_label, 590.0);
+
+        //[AnchorPane-Edit Profile] Profile - profile_phone
+        AnchorPane.setTopAnchor(profile_phone, 420.0);
+        AnchorPane.setLeftAnchor(profile_phone, 150.0);
+        AnchorPane.setRightAnchor(profile_phone, 1080.0);
+        AnchorPane.setBottomAnchor(profile_phone, 590.0);
+
         menu_layout.getChildren().addAll(logout_bt, profile_bt, booking_bg, info_bg, status_bg, logo,
                 status_bt, info_bt, booking_bt, welcome_label,
                 searchRoom, serch_room, check_in_lable, check_in_date, check_out_lable, check_out_date,
                 adult_num, young_num, adult_label, young_label, numRoom_label, room_num, Search_bt,
                 add_on_label, breakfast, dinner, Booking_bt, summery_price, summery_room_price, vat_price,
-                scrollPaneDetails);
+                scrollPaneDetails, booking_status, history_booking,
+                profile_bg, back_bt, save_bt,
+                profile_name_label, profile_name, profile_lastname_label, profile_lastname, profile_age_label, profile_age,
+                profile_gender_label, profile_gender, profile_email_label, profile_email, profile_phone_label, profile_phone);
 
         //[View] --show window
         rootPane.getChildren().addAll(user_page_layout, menu_layout);
