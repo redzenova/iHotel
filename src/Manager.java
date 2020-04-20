@@ -7,7 +7,10 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /*
@@ -24,7 +27,7 @@ public class Manager extends Application {
     private String username;
     private String password;
     private Stage window;
-    private  iHotel main_page;
+    private iHotel main_page;
 
     public static void main2(String[] args) {
         launch(args);
@@ -32,7 +35,7 @@ public class Manager extends Application {
 
     public Manager() {
     }
-  
+
     public Manager(String username, String password) {
         this.username = username;
         this.password = password;
@@ -56,12 +59,21 @@ public class Manager extends Application {
                 Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        
+
         //[Pane Setting]
         StackPane rootPane = new StackPane();
 
+        BorderPane border = new BorderPane();
+        HBox hbox = new HBox();
+        VBox vbox = new VBox();
+        border.setTop(hbox);
+        border.setLeft(vbox);
+        //border.setCenter(vbox);
+        border.setRight(logout_bt);
+        
+
         //[View] --show window
-        rootPane.getChildren().addAll(logout_bt);
+        rootPane.getChildren().addAll(border);
         Scene user_page = new Scene(rootPane, 1440, 900);
         window.setScene(user_page);
         window.show();

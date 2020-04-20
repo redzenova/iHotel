@@ -57,7 +57,7 @@ public class Authentication {
             db.addHeader(filename, header);
         }
         if (db.serach(username, filename)) {
-            if (db.readCell(db.getRowNum(username, filename), 2, "Administrator").equals(password)) {
+            if (db.readCell(db.getRowNum(username, filename), 2, "Manager").equals(password)) {
                 if (db.getRowNum(username, filename) == db.getRowNum(password, filename)) {
                     return true;
                 }
