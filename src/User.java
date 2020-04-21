@@ -59,7 +59,7 @@ public class User extends Application {
     private Stage window;
     private iHotel main_page;
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         launch(args);
     }
 
