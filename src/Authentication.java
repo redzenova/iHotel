@@ -22,11 +22,9 @@ public class Authentication {
         if (db.serach(username, filename)) {
             if (db.readCell(db.getRowNum(username, filename), 7, "User").equals(password)) {
                 if (db.getRowNum(username, filename) == db.getRowNum(password, filename)) {
-                    System.out.println("pass !!");
                     return true;
                 }
             } else {
-                System.out.println("password not correct !");
             }
         }
         return false;
@@ -44,7 +42,6 @@ public class Authentication {
                     return true;
                 }
             } else {
-                System.out.println("password not correct !");
             }
         }
         return false;
@@ -62,7 +59,6 @@ public class Authentication {
                     return true;
                 }
             } else {
-                System.out.println("password not correct !");
             }
         }
         return false;

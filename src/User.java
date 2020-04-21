@@ -1,6 +1,9 @@
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -8,7 +11,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -57,7 +62,12 @@ public class User extends Application {
     private double summery_price = 90000.0;
 
     private Stage window;
+
+    //Custom Class
     private iHotel main_page;
+    private Account acc_temp;
+    private Authentication auth = new Authentication();
+    private Database db = new Database();
 
     public static void main2(String[] args) {
         launch(args);
@@ -66,9 +76,10 @@ public class User extends Application {
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String username, String password) throws IOException {
         this.username = username;
         this.password = password;
+        acc_temp = db.getAccount(this.username, this.password);
     }
 
     @Override
@@ -88,7 +99,7 @@ public class User extends Application {
         //[Component] - Logo
         ImageView image = new ImageView(new Image(new FileInputStream(new File("src/img/ce club.jpg"))));
 
-        Label welcome_label = new Label("ยินดีต้อนรับ คุณ ");
+        Label welcome_label = new Label("ยินดีต้อนรับ คุณ   " +  acc_temp.getFirstName());
         welcome_label.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 28));
         welcome_label.setStyle("-fx-text-fill: #ffffff");
         welcome_label.setVisible(true);
@@ -771,6 +782,38 @@ public class User extends Application {
         save_bt.setOnMouseClicked(e -> {
             save_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #1EB2A6; -fx-text-fill: #ffffff");
 
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("แบบฟอร์มข้อมูลถูกตรวจสอบแล้ว");
+            alert.setHeaderText("คุณต้องการบันทึกข้อมูลใช่หรือไม่ !");
+            alert.setContentText("ถ้าต้องการกด OK ถ้าไม่กด Cancel ");
+
+            Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
+            try {
+                stage2.getIcons().add(new Image(new FileInputStream(new File("src/img/icon.png"))));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                acc_temp.setFirstName(profile_name.getText());
+                acc_temp.setLastName(profile_lastname.getText());
+                acc_temp.setAge(profile_age.getText());
+                acc_temp.setGender(profile_gender.getValue());
+                acc_temp.setEmail(profile_email.getText());
+                acc_temp.setPhoneNumber(profile_phone.getText());
+                try {
+                    if (db.editAccount(acc_temp)) {
+                            System.out.println("success !");
+                    } else {
+                            System.out.println("Fail !");
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                alert.close();
+            }
         });
 
         //===================|  Back Home [Button] setting |=========================
@@ -845,6 +888,13 @@ public class User extends Application {
             profile_email.setVisible(true);
             profile_phone_label.setVisible(true);
             profile_phone.setVisible(true);
+
+            profile_name.setText(acc_temp.getFirstName());
+            profile_lastname.setText(acc_temp.getLastName());
+            profile_age.setText(acc_temp.getAge());
+            profile_gender.setValue(acc_temp.getGender());
+            profile_email.setText(acc_temp.getEmail());
+            profile_phone.setText(acc_temp.getPhoneNumber());
 
         });
 

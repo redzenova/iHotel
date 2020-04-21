@@ -16,7 +16,7 @@ import java.util.Date;
  * @author Redzer0
  */
 public class Account {
-    private int id;
+    private String id;
     private String firstName;
     private String lastName;
     private String age;
@@ -25,10 +25,14 @@ public class Account {
     private String phoneNumber;
     private String password;
     private String dataCreate;
+    private String lastCreate;
     private int numOfAccount = 0;
 
+    public Account() {
+    }
+    
     public Account(String firstName, String lastName, String age, String gender, String email, String phoneNumber, String password) {
-        this.id = 10000 +  numOfAccount;
+        this.id = String.valueOf(10000 +  numOfAccount);
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
@@ -42,10 +46,11 @@ public class Account {
         String strDate = dateFormat.format(date); 
         
         this.dataCreate = strDate;
+        this.lastCreate = strDate;
         numOfAccount++;
     }
     
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -79,6 +84,54 @@ public class Account {
 
     public String getDataCreate() {
         return dataCreate;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setDataCreate(String dataCreate) {
+        this.dataCreate = dataCreate;
+    }
+
+    public void setNumOfAccount(int numOfAccount) {
+        this.numOfAccount = numOfAccount;
+    }
+
+    public String getLastCreate() {
+        return lastCreate;
+    }
+
+    public void setLastCreate(String lastCreate) {
+        this.lastCreate = lastCreate;
     }
     
     

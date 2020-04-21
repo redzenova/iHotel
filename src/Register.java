@@ -54,7 +54,7 @@ public class Register extends Application {
     private boolean isSame;
 
     private String dbName = "User";
-    private String[] header = {"Id", "Firstname", "Lastname", "Age", "Gender", "Email", "Phone Number", "Password", "DataCreate"};
+    private String[] header = {"Id", "Firstname", "Lastname", "Age", "Gender", "Email", "Phone Number", "Password", "DataCreate","Last Edit"};
 
     Validate check = new Validate();
 

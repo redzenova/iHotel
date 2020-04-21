@@ -39,7 +39,7 @@ public class Manager extends Application {
     private Stage window;
     private iHotel main_page;
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         launch(args);
     }
 
@@ -174,7 +174,7 @@ public class Manager extends Application {
         book_table.getColumns().add(book_tb_col2);
         book_table.getColumns().add(book_tb_col3);
 
-        //[Component] - Room Management [All Center Area]
+        //[Component] - Booking Management [All Center Area]
         VBox center_book = new VBox();
         center_book.setVisible(false);
 
@@ -182,6 +182,42 @@ public class Manager extends Application {
         center_book.setMargin(book_table, new Insets(10, 10, 10, 10));
 
         center_book.getChildren().addAll(book_man_label, book_Search_bar, book_table);
+
+        //[Component] - Check-IN Management  [Label]
+        Label check_in_label = new Label("Booking Management");
+        check_in_label.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 24));
+
+        //[Component] - Room Management - Search bar [Hbox]
+        TextField checkin_search_box = new TextField();
+        checkin_search_box.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 18));
+        checkin_search_box.setStyle("-fx-min-width: 400; ");
+
+        Button checkin_search_bt = new Button("ค้นหา");
+        checkin_search_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 18));
+
+        HBox checkin_Search_bar = new HBox(2);
+        checkin_Search_bar.setMargin(checkin_search_box, new Insets(10, 10, 10, 10));
+        checkin_Search_bar.setMargin(checkin_search_bt, new Insets(10, 10, 10, 10));
+        checkin_Search_bar.setAlignment(Pos.BASELINE_RIGHT);
+        checkin_Search_bar.getChildren().addAll(checkin_search_box, checkin_search_bt);
+
+        //[Component] - Room Management Table [Table]
+        TableView checkin_table = new TableView();
+
+        TableColumn checkin_tb_col1 = new TableColumn<>("รายการ");
+        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+
+        checkin_table.getColumns().add(checkin_tb_col1);
+
+
+        //[Component] - Booking Management [All Center Area]
+        VBox center_checkin = new VBox();
+        center_checkin.setVisible(false);
+
+        center_checkin.setMargin(check_in_label, new Insets(10, 10, 10, 10));
+        center_checkin.setMargin(checkin_table, new Insets(10, 10, 10, 10));
+
+        center_checkin.getChildren().addAll(check_in_label, checkin_Search_bar, checkin_table);
 
         //========================= [Menu] Room Management [Button] ========================
         Button room_man_bt = new Button("จัดการห้องพัก");
@@ -204,6 +240,7 @@ public class Manager extends Application {
             border.setCenter(center_room);
             center_room.setVisible(true);
             center_book.setVisible(false);
+            center_checkin.setVisible(false);
 
         });
         //=======================================================================
@@ -229,13 +266,14 @@ public class Manager extends Application {
             border.setCenter(center_book);
             center_room.setVisible(false);
             center_book.setVisible(true);
+            center_checkin.setVisible(false);
         });
         //=======================================================================
 
         //============================ [Menu] Check-In [Button] ==========================          
         Button check_in_bt = new Button("CHECK-IN");
         check_in_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 26));
-        check_in_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFA34D; -fx-text-fill: #000000");
+        check_in_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFA34D; -fx-text-fill: #000000 ");
         //On mouse idle
         check_in_bt.setOnMouseExited(e -> {
             check_in_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFA34D; -fx-text-fill: #000000");
@@ -250,6 +288,10 @@ public class Manager extends Application {
         check_in_bt.setOnMouseClicked(e -> {
             check_in_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFA34D; -fx-text-fill: #000000");
 
+            border.setCenter(center_checkin);
+            center_room.setVisible(false);
+            center_book.setVisible(false);
+            center_checkin.setVisible(true);
         });
         //=======================================================================
 

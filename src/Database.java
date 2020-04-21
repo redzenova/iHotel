@@ -13,7 +13,11 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 
@@ -147,6 +151,7 @@ public class Database {
             row.createCell(6).setCellValue(a.getPhoneNumber());
             row.createCell(7).setCellValue(a.getPassword());
             row.createCell(8).setCellValue(a.getDataCreate());
+            row.createCell(9).setCellValue(a.getDataCreate());
         }
 
         // Resize all columns to fit the content size
@@ -293,7 +298,7 @@ public class Database {
 
     public int getRowNum(String data, String filename) throws FileNotFoundException, IOException {
 
-        File excelFile = new File("src/db/"+filename+".xlsx");
+        File excelFile = new File("src/db/" + filename + ".xlsx");
         FileInputStream fis = new FileInputStream(excelFile);
 
         XSSFWorkbook workbook = new XSSFWorkbook(fis);
@@ -321,7 +326,7 @@ public class Database {
 
     public int getCellNum(String data, String filename) throws FileNotFoundException, IOException {
 
-        File excelFile = new File("src/db/"+filename+".xlsx");
+        File excelFile = new File("src/db/" + filename + ".xlsx");
         FileInputStream fis = new FileInputStream(excelFile);
 
         XSSFWorkbook workbook = new XSSFWorkbook(fis);
@@ -379,10 +384,9 @@ public class Database {
                 Cell cell = cellIterator.next();
                 if (row.getRowNum() == rowNum && cell.getColumnIndex() == collumNum) {
                     s = cell.toString();
-                    System.out.println("pass is " + s);            
+                    //System.out.println("pass is " + s);
                     return s;
                 }
-
             }
 
             workbook.close();
@@ -391,4 +395,149 @@ public class Database {
         }
         return null;
     }
+
+    public Account getAccount(String username, String password) throws FileNotFoundException, IOException {
+        Account acc = new Account();
+        Authentication auth = new Authentication();
+        int numRow = this.getRowNum(username, "User");
+        File excelFile = new File("src/db/User.xlsx");
+        FileInputStream fis = new FileInputStream(excelFile);
+
+        XSSFWorkbook workbook = new XSSFWorkbook(fis);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+
+        if (auth.isUser(username, password)) {
+            Iterator<Row> rowIt = sheet.iterator();
+            while (rowIt.hasNext()) {
+                Row row = rowIt.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+                while (cellIterator.hasNext()) {
+                    Cell cell = cellIterator.next();
+                    if (row.getRowNum() == numRow) {
+
+                        if (cell.getColumnIndex() == 0) {
+                            acc.setId(cell.getStringCellValue());
+                        }
+                        if (cell.getColumnIndex() == 1) {
+                            acc.setFirstName(cell.getStringCellValue());
+                        }
+                        if (cell.getColumnIndex() == 2) {
+                            acc.setLastName(cell.getStringCellValue());
+                        }
+                        if (cell.getColumnIndex() == 3) {
+                            acc.setAge(cell.getStringCellValue());
+                        }
+                        if (cell.getColumnIndex() == 4) {
+                            acc.setGender(cell.getStringCellValue());
+                        }
+                        if (cell.getColumnIndex() == 5) {
+                            acc.setEmail(cell.getStringCellValue());
+                        }
+                        if (cell.getColumnIndex() == 6) {
+                            acc.setPhoneNumber(cell.getStringCellValue());
+                        }
+                        if (cell.getColumnIndex() == 7) {
+                            acc.setPassword(cell.getStringCellValue());
+                        }
+                        if (cell.getColumnIndex() == 8) {
+                            acc.setDataCreate(cell.toString());
+                        }
+                    }
+                }
+            }
+        }
+
+        workbook.close();
+        fis.close();
+        return acc;
+    }
+
+    public boolean editAccount(Account temp) throws FileNotFoundException, IOException {
+        Date date = Calendar.getInstance().getTime();
+        DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
+        String strDate = dateFormat.format(date);
+
+        int numRow = this.getRowNum(temp.getId(), "User");
+
+        File excelFile = new File("src/db/User.xlsx");
+        FileInputStream fis = new FileInputStream(excelFile);
+
+        XSSFWorkbook workbook = new XSSFWorkbook(fis);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+
+//        Workbook workbook = new XSSFWorkbook(fis);
+//        Sheet sheet = workbook.getSheet("User");
+//        System.out.println("numRow " + numRow);
+//        System.out.println("id " + temp.getId());
+//        System.out.println("Firstname " + temp.getFirstName());
+//        System.out.println("Lastname " + temp.getLastName());
+//        System.out.println("Age " + temp.getAge());
+//        System.out.println("Gender " + temp.getGender());
+//        System.out.println("Email " + temp.getEmail());
+//        System.out.println("phone " + temp.getPhoneNumber());
+//        System.out.println("pass " + temp.getPassword());
+//        System.out.println("data " + temp.getDataCreate());
+//
+//        Row row2 = sheet.createRow(numRow);
+//        row2.createCell(1).setCellValue(temp.getFirstName());
+//        row2.createCell(2).setCellValue(temp.getLastName());
+//        row2.createCell(3).setCellValue(temp.getAge());
+//        row2.createCell(4).setCellValue(temp.getGender());
+//        row2.createCell(5).setCellValue(String.valueOf(temp.getEmail()));
+//        row2.createCell(6).setCellValue(temp.getPhoneNumber());
+//        row2.createCell(9).setCellValue(strDate);
+//
+//        System.out.println("Nameee " + row2.getCell(1).getStringCellValue());
+//        System.out.println("numRow " + numRow);
+//       
+        Iterator<Row> rowIt = sheet.iterator();
+        while (rowIt.hasNext()) {
+            Row row = rowIt.next();
+            Iterator<Cell> cellIterator = row.cellIterator();
+            while (cellIterator.hasNext()) {
+                Cell cell = cellIterator.next();
+
+                if (row.getRowNum() == numRow) {
+
+                    if (cell.getColumnIndex() == 0) {
+                        cell.setCellValue(temp.getId());
+                    }
+                    if (cell.getColumnIndex() == 1) {
+                        cell.setCellValue(temp.getFirstName());
+                    }
+                    if (cell.getColumnIndex() == 2) {
+                        cell.setCellValue(temp.getLastName());
+                    }
+                    if (cell.getColumnIndex() == 3) {
+                        cell.setCellValue(temp.getAge());
+                    }
+                    if (cell.getColumnIndex() == 4) {
+                        cell.setCellValue(temp.getGender());
+                    }
+                    if (cell.getColumnIndex() == 5) {
+                        cell.setCellValue(temp.getEmail());
+                    }
+                    if (cell.getColumnIndex() == 6) {
+                        cell.setCellValue(temp.getPhoneNumber());
+                    }
+                    if (cell.getColumnIndex() == 7) {
+                        cell.setCellValue(temp.getPassword());
+                    }
+                    if (cell.getColumnIndex() == 8) {
+                        cell.setCellValue(temp.getDataCreate());
+                    }
+                    if (cell.getColumnIndex() == 9) {
+                        cell.setCellValue(strDate);
+                    }
+                }
+            }
+        }
+
+        FileOutputStream fileOut = new FileOutputStream("src/db/User.xlsx");
+        workbook.write(fileOut);
+        fileOut.close();
+        fis.close();
+        return true;
+    }
+
 }
