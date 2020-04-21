@@ -13,6 +13,10 @@ import java.io.IOException;
 public class TestClass {
 
     public static void main2(String[] args) throws IOException {
+            Room room = new Room();
+            
+            room.getStatus();
+        
             Account acc_temp ;
             Database db = new Database();
             

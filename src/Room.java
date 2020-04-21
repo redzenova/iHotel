@@ -16,6 +16,7 @@ public class Room {
     private String roomClass;
     private String building;
     private String floor;
+    private String Status;
     private int numBed;
     private double basePrice;
 
@@ -30,6 +31,7 @@ public class Room {
         this.floor = floor;
         this.numBed = numBed;
         this.basePrice = price;
+        this.Status = "Unoccupied";
     }
 
     public String getRoomID() {
@@ -95,5 +97,22 @@ public class Room {
     public void setPrice(double price) {
         this.basePrice = price;
     }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String Status) {
+        this.Status = Status;
+    }
+
+    public double getBasePrice() {
+        return basePrice;
+    }
+
+    public void setBasePrice(double basePrice) {
+        this.basePrice = basePrice;
+    }
+    
     
 }

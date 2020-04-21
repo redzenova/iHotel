@@ -71,7 +71,7 @@ public class RoomManagement {
             DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
             String strDate = dateFormat.format(date);
 
-            row.createCell(8).setCellValue("Unoccupied");
+            row.createCell(8).setCellValue(room.getStatus());
             row.createCell(9).setCellValue(strDate);
 
         // Resize all columns to fit the content size
