@@ -493,7 +493,6 @@ public class User extends Application {
         room_man = new RoomManagement();
 
         ArrayList<Room> roomList = room_man.searchRoom();
-        
 
         TableColumn col1 = new TableColumn<>("ID");
         col1.setCellValueFactory(new PropertyValueFactory<Room, String>("roomID"));
@@ -509,6 +508,12 @@ public class User extends Application {
 
         TableColumn col5 = new TableColumn<>("Booked");
         col5.setCellValueFactory(new PropertyValueFactory<Room, CheckBox>("select"));
+
+        col1.setVisible(false);
+        col2.setVisible(false);
+        col3.setVisible(false);
+        col4.setVisible(false);
+        col5.setVisible(false);
 
         tableView.getColumns().add(col1);
         tableView.getColumns().add(col2);
@@ -605,11 +610,51 @@ public class User extends Application {
             for (int t = 0; t < roomList.size(); t++) {
                 tableView.getItems().add(roomList.get(t));
             }
-            this.isClick = true;
+
+            col1.setVisible(true);
+            col2.setVisible(true);
+            col3.setVisible(true);
+            col4.setVisible(true);
+            col5.setVisible(true);
 
         });
-        //============================================================
 
+        for (int t = 0; t < roomList.size(); t++) {
+            tableView.getItems().add(roomList.get(t));
+        }
+
+        for (int t = 0; t < roomList.size(); t++) {
+            Room r = (Room) tableView.getItems().get(t);
+            r.getSelect().setOnMouseClicked(e -> {
+                if (r.getSelect().isSelected()) {
+                    System.out.println("is Select !");
+                    this.numSelect++;
+                } else {
+                    System.out.println(" un select !");
+                    this.numSelect--;
+                }
+
+                if (this.numSelect == room_num.getValue()) {
+                    for (int h = 0; h < roomList.size(); h++) {
+                        Room r2 = (Room) tableView.getItems().get(h);
+                        if (!r2.getSelect().isSelected()) {
+                            r2.getSelect().setDisable(true);
+                        }
+                    }
+                } else {
+                    for (int h = 0; h < roomList.size(); h++) {
+                        Room r2 = (Room) tableView.getItems().get(h);
+                        if (!r2.getSelect().isSelected()) {
+                            r2.getSelect().setDisable(false);
+                        }
+                    }
+                }
+                System.out.println(" Room Num " + room_num.getValue());
+                System.out.println(" numSelect " + this.numSelect);
+            });
+        }
+
+        //============================================================
         //===================|  Booking [Button] setting |=========================
         Button Booking_bt = new Button("จองเลยเดี๋ยวนี้");
         Booking_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 26));
@@ -904,17 +949,6 @@ public class User extends Application {
             profile_phone.setText(acc_temp.getPhoneNumber());
 
         });
-         
-        if (this.isClick) {
-            if (room_num.getValue() == this.numSelect) {
-                for(int i=0 ; i < roomList.size();i++){
-                    Room r = (Room) tableView.getItems().get(i);
-                    r.getSelect().setDisable(true);
-                }
-            }
-            System.out.println("ssss");
-            this.isClick = false;
-        }
 
         //[Pane Setting]
         StackPane rootPane = new StackPane();

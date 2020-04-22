@@ -138,14 +138,14 @@ public class RoomManagement {
                 }
                 if (j == 8) {
                     temp_room.setStatus(cell.getStringCellValue());
-                     System.out.println("J = 8 " + temp_room.getStatus());
+                     //System.out.println("J = 8 " + temp_room.getStatus());
                 }
             }
             
             if(temp_room.getStatus().equals("Unoccupied") && temp_room.getStatus() != null){
                 temp_room.setSelect(new CheckBox());
                 temp_room_list.add(temp_room);
-                System.out.println("Room " + temp_room.getStatus());
+                //System.out.println("Room " + temp_room.getStatus());
             }
         }
         
