@@ -600,24 +600,32 @@ public class User extends Application {
         history_booking.setStyle("-fx-text-fill: #ffffff");
         history_booking.setVisible(false);
 
+        BookingManagement book_mg = new BookingManagement();
+
+        ArrayList<Booking> bookingList = book_mg.searchBooking(acc_temp.getFirstName() + "   " + acc_temp.getLastName());
+
         TableView tableView2 = new TableView();
 
-        TableColumn C1 = new TableColumn<>("รายการ");
-        C1.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        TableColumn C1 = new TableColumn<>("Booking ID");
+        C1.setCellValueFactory(new PropertyValueFactory<Booking, String>("ID"));
 
-        TableColumn C2 = new TableColumn<>("ลักษณะห้องพัก");
-        C2.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        TableColumn C2 = new TableColumn<>("Customer name");
+        C2.setCellValueFactory(new PropertyValueFactory<>("CustomerName"));
 
-        TableColumn C3 = new TableColumn<>("รูปแบบ");
-        C3.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        TableColumn C3 = new TableColumn<>("Check In");
+        C3.setCellValueFactory(new PropertyValueFactory<>("CheckInDate"));
 
-        TableColumn C4 = new TableColumn<>("ราตา ต่อห้อง ต่อคืน");
-        C4.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        TableColumn C4 = new TableColumn<>("Check Out");
+        C4.setCellValueFactory(new PropertyValueFactory<>("CheckOutDate"));
 
-        TableColumn C5 = new TableColumn<>("ห้อง");
-        C5.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        TableColumn C5 = new TableColumn<>("Room Type");
+        C5.setCellValueFactory(new PropertyValueFactory<>("RoomType"));
 
-        TableColumn C6 = new TableColumn<>("จองเลย");
+        TableColumn C6 = new TableColumn<>("Room Class");
+        C6.setCellValueFactory(new PropertyValueFactory<>("RoomClass"));
+
+        TableColumn C7 = new TableColumn<>("Total Price");
+        C7.setCellValueFactory(new PropertyValueFactory<Booking , Double>("totalPrice"));
 
         tableView2.getColumns().add(C1);
         tableView2.getColumns().add(C2);
@@ -625,6 +633,8 @@ public class User extends Application {
         tableView2.getColumns().add(C4);
         tableView2.getColumns().add(C5);
         tableView2.getColumns().add(C6);
+        tableView2.getColumns().add(C7);
+
         VBox booking_status = new VBox(tableView2);
         booking_status.setVisible(false);
 
@@ -783,16 +793,18 @@ public class User extends Application {
                 Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            Booking booking = new Booking();
             for (int p = 0; p < roomCheckList.size(); p++) {
+                BookingManagement bookmg = new BookingManagement();
+                Booking booking = new Booking(acc_temp.getFirstName() + "   " + acc_temp.getLastName(), check_in_date.getValue().toString(), check_out_date.getValue().toString(),
+                        roomCheckList.get(p).getRoomType(), roomCheckList.get(p).getRoomClass(), roomCheckList.get(p).getBuilding(), roomCheckList.get(p).getFloor(),
+                        adult_num.getValue().toString(), young_num.getValue().toString(),
+                        String.valueOf(breakfast.isSelected()), String.valueOf(dinner.isSelected()), this.summery_price, "Booked");
                 try {
-                    booking.addBooking(roomCheckList.get(p).getRoomID(), acc_temp.getFirstName() + "   " + acc_temp.getLastName(), check_in_date.getValue().toString(), check_out_date.getValue().toString(),
-                            roomCheckList.get(p).getRoomType(), roomCheckList.get(p).getRoomClass(), roomCheckList.get(p).getBuilding(), roomCheckList.get(p).getFloor(),
-                            adult_num.getValue().toString(), young_num.getValue().toString(),
-                            String.valueOf(breakfast.isSelected()), String.valueOf(dinner.isSelected()), "Booked");
+                    bookmg.addBooking(roomCheckList.get(p).getRoomID(), booking);
                 } catch (IOException ex) {
                     Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
             }
 
             tableView.getItems().clear();
@@ -828,6 +840,10 @@ public class User extends Application {
         //On mouse click
         status_bt.setOnMouseClicked(e -> {
             status_bt.setStyle(" -fx-background-color: #1EB2A6; -fx-text-fill: #ffffff");
+
+            for (int t = 0; t < bookingList.size(); t++) {
+                tableView2.getItems().add(bookingList.get(t));
+            }
 
             searchRoom.setVisible(false);
             scrollPaneDetails.setVisible(false);
