@@ -3,13 +3,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -18,12 +18,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Spinner;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -40,7 +36,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -69,7 +64,7 @@ public class User extends Application {
     private Authentication auth = new Authentication();
     private Database db = new Database();
 
-    public static void main2(String[] args) {
+    public static void main(String[] args) {
         launch(args);
     }
 
@@ -96,10 +91,10 @@ public class User extends Application {
         logo.setScaleX(0.3);
         logo.setScaleY(0.3);
 
-        //[Component] - Logo
-        ImageView image = new ImageView(new Image(new FileInputStream(new File("src/img/ce club.jpg"))));
+        Label welcome_label;
 
-        Label welcome_label = new Label("ยินดีต้อนรับ คุณ   " +  acc_temp.getFirstName());
+        welcome_label = new Label("ยินดีต้อนรับ คุณ   ");
+
         welcome_label.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 28));
         welcome_label.setStyle("-fx-text-fill: #ffffff");
         welcome_label.setVisible(true);
@@ -491,30 +486,36 @@ public class User extends Application {
         room_num.setStyle(" -fx-font-size: 20;");
 
         TableView tableView = new TableView();
+        RoomManagement room_man;
+        room_man = new RoomManagement();
 
-        TableColumn col1 = new TableColumn<>("รายการ");
-        col1.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        ArrayList<Room> roomList = room_man.searchRoom();
 
-        TableColumn col2 = new TableColumn<>("ลักษณะห้องพัก");
-        col2.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        for (int t = 0; t < roomList.size(); t++) {
+            tableView.getItems().add(roomList.get(t));
+        }
+        
+        TableColumn col1 = new TableColumn<>("ID");
+        col1.setCellValueFactory(new PropertyValueFactory<Room, String>("roomID"));
 
-        TableColumn col3 = new TableColumn<>("รูปแบบ");
-        col3.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        TableColumn col2 = new TableColumn<>("Room Type");
+        col2.setCellValueFactory(new PropertyValueFactory<Room, String>("roomType"));
 
-        TableColumn col4 = new TableColumn<>("ราตา ต่อห้อง ต่อคืน");
-        col4.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        TableColumn col3 = new TableColumn<>("Room Class");
+        col3.setCellValueFactory(new PropertyValueFactory<Room, String>("roomClass"));
 
-        TableColumn col5 = new TableColumn<>("ห้อง");
-        col4.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        TableColumn col4 = new TableColumn<>("Price");
+        col4.setCellValueFactory(new PropertyValueFactory<Room, String>("basePrice"));
 
-        TableColumn col6 = new TableColumn<>("จองเลย");
+        TableColumn col5 = new TableColumn<>("Booked");
+        col5.setCellValueFactory(new PropertyValueFactory<Room, CheckBox>("select"));
 
         tableView.getColumns().add(col1);
         tableView.getColumns().add(col2);
         tableView.getColumns().add(col3);
         tableView.getColumns().add(col4);
         tableView.getColumns().add(col5);
-        tableView.getColumns().add(col6);
+
         VBox searchRoom = new VBox(tableView);
         searchRoom.setVisible(true);
 
@@ -622,6 +623,13 @@ public class User extends Application {
         //On mouse click
         Booking_bt.setOnMouseClicked(e -> {
             Booking_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFC997; -fx-text-fill: #ffffff");
+
+            for (int k = 0; k < roomList.size(); k++) {
+                Room r = (Room) tableView.getItems().get(k);
+                if (r.isSelect() == true) {
+                    System.out.println("Sout " + r.getRoomNumber());
+                }
+            }
 
         });
         //============================================================
@@ -804,9 +812,9 @@ public class User extends Application {
                 acc_temp.setPhoneNumber(profile_phone.getText());
                 try {
                     if (db.editAccount(acc_temp)) {
-                            System.out.println("success !");
+                        System.out.println("success !");
                     } else {
-                            System.out.println("Fail !");
+                        System.out.println("Fail !");
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);

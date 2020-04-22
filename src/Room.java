@@ -1,3 +1,6 @@
+
+import javafx.scene.control.CheckBox;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -19,6 +22,7 @@ public class Room {
     private String Status;
     private int numBed;
     private double basePrice;
+    private CheckBox select;
 
     public Room() {
     }
@@ -32,6 +36,7 @@ public class Room {
         this.numBed = numBed;
         this.basePrice = price;
         this.Status = "Unoccupied";
+        this.select = new CheckBox();
     }
 
     public String getRoomID() {
@@ -90,14 +95,6 @@ public class Room {
         this.numBed = numBed;
     }
 
-    public double getPrice() {
-        return basePrice;
-    }
-
-    public void setPrice(double price) {
-        this.basePrice = price;
-    }
-
     public String getStatus() {
         return Status;
     }
@@ -112,6 +109,21 @@ public class Room {
 
     public void setBasePrice(double basePrice) {
         this.basePrice = basePrice;
+    }
+
+    public CheckBox getSelect() {
+        return select;
+    }
+
+    public void setSelect(CheckBox select) {
+        this.select = select;
+    }
+    
+    public boolean isSelect(){
+        if(this.select.isSelected()){
+            return true;
+        }
+        return false;
     }
     
     
