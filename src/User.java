@@ -50,6 +50,9 @@ public class User extends Application {
 
     private String username;
     private String password;
+    private int numSelect = 0;
+    private int numDeSelect = 0;
+    private boolean isClick;
     private double breakfast_price = 800.0;
     private double dinner_price = 1750.0;
     private double summery_room_price = 10000.0;
@@ -490,11 +493,8 @@ public class User extends Application {
         room_man = new RoomManagement();
 
         ArrayList<Room> roomList = room_man.searchRoom();
-
-        for (int t = 0; t < roomList.size(); t++) {
-            tableView.getItems().add(roomList.get(t));
-        }
         
+
         TableColumn col1 = new TableColumn<>("ID");
         col1.setCellValueFactory(new PropertyValueFactory<Room, String>("roomID"));
 
@@ -602,6 +602,11 @@ public class User extends Application {
         Search_bt.setOnMouseClicked(e -> {
             Search_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFC997; -fx-text-fill: #ffffff");
 
+            for (int t = 0; t < roomList.size(); t++) {
+                tableView.getItems().add(roomList.get(t));
+            }
+            this.isClick = true;
+
         });
         //============================================================
 
@@ -614,6 +619,7 @@ public class User extends Application {
         Booking_bt.setOnMouseExited(e -> {
             Booking_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFA34D; -fx-text-fill: #000000");
             Booking_bt.setEffect(null);
+
         });
         //On mouse hover
         Booking_bt.setOnMouseEntered(e -> {
@@ -623,13 +629,6 @@ public class User extends Application {
         //On mouse click
         Booking_bt.setOnMouseClicked(e -> {
             Booking_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFC997; -fx-text-fill: #ffffff");
-
-            for (int k = 0; k < roomList.size(); k++) {
-                Room r = (Room) tableView.getItems().get(k);
-                if (r.isSelect() == true) {
-                    System.out.println("Sout " + r.getRoomNumber());
-                }
-            }
 
         });
         //============================================================
@@ -905,6 +904,17 @@ public class User extends Application {
             profile_phone.setText(acc_temp.getPhoneNumber());
 
         });
+         
+        if (this.isClick) {
+            if (room_num.getValue() == this.numSelect) {
+                for(int i=0 ; i < roomList.size();i++){
+                    Room r = (Room) tableView.getItems().get(i);
+                    r.getSelect().setDisable(true);
+                }
+            }
+            System.out.println("ssss");
+            this.isClick = false;
+        }
 
         //[Pane Setting]
         StackPane rootPane = new StackPane();
