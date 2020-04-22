@@ -55,14 +55,17 @@ public class User extends Application {
     private boolean isClick;
     private double breakfast_price = 800.0;
     private double dinner_price = 1750.0;
-    private double summery_room_price = 10000.0;
-    private double vat_price = 1000.0;
-    private double summery_price = 90000.0;
+    private double summery_room_price = 0.0;
+    private double vat_price = 0.0;
+    private double summery_price = 0.0;
+    private int NumberOfDay = 0;
 
     private Stage window;
 
     //Custom Class
     private iHotel main_page;
+    private Room r1 = new Room();
+    private Room r2 = new Room();
     private Account acc_temp;
     private Authentication auth = new Authentication();
     private Database db = new Database();
@@ -465,16 +468,52 @@ public class User extends Application {
         CheckBox breakfast = new CheckBox("บริการอาหารเช้า " + this.breakfast_price + " บาท/มื้อ");
         breakfast.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
         breakfast.setStyle("-fx-text-fill: #ffffff");
+        breakfast.setOnAction(eh -> {
+            if (breakfast.isSelected()) {
+                this.summery_price += this.breakfast_price * this.NumberOfDay;
+                this.vat_price = this.summery_price * 0.07;
+                breakfast.setText("บริการอาหารเช้า " + this.breakfast_price + " บาท/มื้อ");
+                vat_price.setText("รวมภาษีมูลค่าเพิ่ม 7%    " + (int) this.vat_price + " บาท");
+                summery_price.setText("ราคารวมสุทธิ       " + this.summery_price + " บาท");
+            }
+            if (!breakfast.isSelected()) {
+                this.summery_price -= this.breakfast_price * this.NumberOfDay;
+                this.vat_price = this.summery_price * 0.07;
+                breakfast.setText("บริการอาหารเช้า " + this.breakfast_price + " บาท/มื้อ");
+                vat_price.setText("รวมภาษีมูลค่าเพิ่ม 7%    " + (int) this.vat_price + " บาท");
+                summery_price.setText("ราคารวมสุทธิ       " + this.summery_price + " บาท");
+            }
+        });
 
         CheckBox dinner = new CheckBox("บริการอาหารเย็น " + this.dinner_price + " บาท/มื้อ");
         dinner.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
         dinner.setStyle("-fx-text-fill: #ffffff");
+        dinner.setOnAction(eh -> {
+            if (dinner.isSelected()) {
+                this.summery_price += this.dinner_price * this.NumberOfDay;
+                this.vat_price = this.summery_price * 0.07;
+                dinner.setText("บริการอาหารเช้า " + this.dinner_price + " บาท/มื้อ");
+                vat_price.setText("รวมภาษีมูลค่าเพิ่ม 7%    " + (int) this.vat_price + " บาท");
+                summery_price.setText("ราคารวมสุทธิ       " + this.summery_price + " บาท");
+            }
+            if (!dinner.isSelected()) {
+                this.summery_price -= this.dinner_price * this.NumberOfDay;
+                this.vat_price = this.summery_price * 0.07;
+                dinner.setText("บริการอาหารเช้า " + this.dinner_price + " บาท/มื้อ");
+                vat_price.setText("รวมภาษีมูลค่าเพิ่ม 7%    " + (int) this.vat_price + " บาท");
+                summery_price.setText("ราคารวมสุทธิ       " + this.summery_price + " บาท");
+            }
+        });
 
         DatePicker check_in_date = new DatePicker();
         check_in_date.setStyle("-fx-font-size: 20;");
 
         DatePicker check_out_date = new DatePicker();
         check_out_date.setStyle(" -fx-font-size: 20;");
+        check_out_date.setOnAction(eh -> {
+            this.NumberOfDay = check_out_date.getValue().getDayOfYear() - check_in_date.getValue().getDayOfYear();
+            System.out.println("Num day" + this.NumberOfDay);
+        });
 
         Spinner<Integer> adult_num = new Spinner<Integer>(0, 15, 1);
         adult_num.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
@@ -496,28 +535,57 @@ public class User extends Application {
 
         TableColumn col1 = new TableColumn<>("ID");
         col1.setCellValueFactory(new PropertyValueFactory<Room, String>("roomID"));
+        col1.setMinWidth(50);
+        col1.setReorderable(false);
+        col1.setResizable(false);
+        col1.setStyle("-fx-alignment: CENTER;");
 
         TableColumn col2 = new TableColumn<>("Room Type");
         col2.setCellValueFactory(new PropertyValueFactory<Room, String>("roomType"));
+        col2.setMinWidth(150);
+        col2.setReorderable(false);
+        col2.setResizable(false);
+        col2.setStyle("-fx-alignment: CENTER;");
 
         TableColumn col3 = new TableColumn<>("Room Class");
         col3.setCellValueFactory(new PropertyValueFactory<Room, String>("roomClass"));
+        col3.setMinWidth(150);
+        col3.setReorderable(false);
+        col3.setResizable(false);
+        col3.setStyle("-fx-alignment: CENTER;");
 
         TableColumn col4 = new TableColumn<>("Price");
         col4.setCellValueFactory(new PropertyValueFactory<Room, String>("basePrice"));
+        col4.setMinWidth(150);
+        col4.setReorderable(false);
+        col4.setResizable(false);
+        col4.setStyle("-fx-alignment: CENTER;");
 
         TableColumn col5 = new TableColumn<>("Booked");
         col5.setCellValueFactory(new PropertyValueFactory<Room, CheckBox>("select"));
+        col5.setMinWidth(300);
+        col5.setReorderable(false);
+        col5.setResizable(false);
+        col5.setStyle("-fx-alignment: CENTER;");
+
+        TableColumn col6 = new TableColumn<>("Floor");
+        col3.setCellValueFactory(new PropertyValueFactory<Room, String>("floor"));
+        col3.setMinWidth(150);
+        col3.setReorderable(false);
+        col3.setResizable(false);
+        col3.setStyle("-fx-alignment: CENTER;");
 
         col1.setVisible(false);
         col2.setVisible(false);
         col3.setVisible(false);
         col4.setVisible(false);
         col5.setVisible(false);
+        col6.setVisible(false);
 
         tableView.getColumns().add(col1);
         tableView.getColumns().add(col2);
         tableView.getColumns().add(col3);
+        tableView.getColumns().add(col6);
         tableView.getColumns().add(col4);
         tableView.getColumns().add(col5);
 
@@ -607,8 +675,16 @@ public class User extends Application {
         Search_bt.setOnMouseClicked(e -> {
             Search_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFC997; -fx-text-fill: #ffffff");
 
-            for (int t = 0; t < roomList.size(); t++) {
-                tableView.getItems().add(roomList.get(t));
+            try {
+                for (int t = 0; t < room_man.searchRoom().size(); t++) {
+                    try {
+                        tableView.getItems().add(room_man.searchRoom().get(t));
+                    } catch (IOException ex) {
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             col1.setVisible(true);
@@ -616,41 +692,61 @@ public class User extends Application {
             col3.setVisible(true);
             col4.setVisible(true);
             col5.setVisible(true);
+            col6.setVisible(true);
 
         });
 
-        for (int t = 0; t < roomList.size(); t++) {
-            tableView.getItems().add(roomList.get(t));
+        for (int t = 0; t < room_man.searchRoom().size(); t++) {
+            tableView.getItems().add(room_man.searchRoom().get(t));
         }
 
-        for (int t = 0; t < roomList.size(); t++) {
+        for (int t = 0; t < room_man.searchRoom().size(); t++) {
             Room r = (Room) tableView.getItems().get(t);
-            r.getSelect().setOnMouseClicked(e -> {
+            r.getSelect().setOnAction(e -> {
                 if (r.getSelect().isSelected()) {
-                    System.out.println("is Select !");
+                    //System.out.println("is Select !");                    
                     this.numSelect++;
-                } else {
-                    System.out.println(" un select !");
+                    this.summery_room_price += r.getBasePrice() * this.NumberOfDay;
+                    this.summery_price += this.summery_room_price;
+                    summery_room_price.setText("ราคาห้องรวม           " + this.summery_room_price + " บาท");
+                    summery_price.setText("ราคารวมสุทธิ       " + this.summery_price + " บาท");
+                    this.vat_price = this.summery_price * 0.07;
+                    vat_price.setText("รวมภาษีมูลค่าเพิ่ม 7%    " + (int) this.vat_price + " บาท");
+                }
+                if (!r.getSelect().isSelected()) {
+                    //System.out.println(" un select !");
                     this.numSelect--;
+                    this.summery_room_price -= r.getBasePrice() * this.NumberOfDay;
+                    this.summery_price = this.summery_room_price;
+                    summery_room_price.setText("ราคาห้องรวม           " + this.summery_room_price + " บาท");
+                    summery_price.setText("ราคารวมสุทธิ       " + this.summery_price + " บาท");
+                    this.vat_price = this.summery_price * 0.07;
+                    vat_price.setText("รวมภาษีมูลค่าเพิ่ม 7%    " + (int) this.vat_price + " บาท");
                 }
 
                 if (this.numSelect == room_num.getValue()) {
-                    for (int h = 0; h < roomList.size(); h++) {
-                        Room r2 = (Room) tableView.getItems().get(h);
-                        if (!r2.getSelect().isSelected()) {
-                            r2.getSelect().setDisable(true);
+                    try {
+                        for (int h = 0; h < room_man.searchRoom().size(); h++) {
+                            Room r2 = (Room) tableView.getItems().get(h);
+                            if (!r2.getSelect().isSelected()) {
+                                r2.getSelect().setDisable(true);
+                            }
                         }
+                    } catch (IOException ex) {
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
-                    for (int h = 0; h < roomList.size(); h++) {
-                        Room r2 = (Room) tableView.getItems().get(h);
-                        if (!r2.getSelect().isSelected()) {
-                            r2.getSelect().setDisable(false);
+                    try {
+                        for (int h = 0; h < room_man.searchRoom().size(); h++) {
+                            Room r2 = (Room) tableView.getItems().get(h);
+                            if (!r2.getSelect().isSelected()) {
+                                r2.getSelect().setDisable(false);
+                            }
                         }
+                    } catch (IOException ex) {
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                System.out.println(" Room Num " + room_num.getValue());
-                System.out.println(" numSelect " + this.numSelect);
             });
         }
 
@@ -674,6 +770,42 @@ public class User extends Application {
         //On mouse click
         Booking_bt.setOnMouseClicked(e -> {
             Booking_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFC997; -fx-text-fill: #ffffff");
+
+            ArrayList<Room> roomCheckList = new ArrayList();
+            try {
+                for (int ii = 0; ii < room_man.searchRoom().size(); ii++) {
+                    Room roomCheck = (Room) tableView.getItems().get(ii);
+                    if (roomCheck.isSelect()) {
+                        roomCheckList.add(roomCheck);
+                    }
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            Booking booking = new Booking();
+            for (int p = 0; p < roomCheckList.size(); p++) {
+                try {
+                    booking.addBooking(roomCheckList.get(p).getRoomID(), acc_temp.getFirstName() + "   " + acc_temp.getLastName(), check_in_date.getValue().toString(), check_out_date.getValue().toString(),
+                            roomCheckList.get(p).getRoomType(), roomCheckList.get(p).getRoomClass(), roomCheckList.get(p).getBuilding(), roomCheckList.get(p).getFloor(),
+                            adult_num.getValue().toString(), young_num.getValue().toString(),
+                            String.valueOf(breakfast.isSelected()), String.valueOf(dinner.isSelected()), "Booked");
+                } catch (IOException ex) {
+                    Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            tableView.getItems().clear();
+            roomList.clear();
+            roomCheckList.clear();
+            this.numSelect = 0;
+            this.NumberOfDay = 0;
+            this.summery_price = 0;
+            this.vat_price = 0;
+            this.summery_room_price = 0;
+            summery_room_price.setText("ราคาห้องรวม           " + this.summery_room_price + " บาท");
+            summery_price.setText("ราคารวมสุทธิ       " + this.summery_price + " บาท");
+            vat_price.setText("รวมภาษีมูลค่าเพิ่ม 7%    " + (int) this.vat_price + " บาท");
 
         });
         //============================================================

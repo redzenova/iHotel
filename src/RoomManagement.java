@@ -15,6 +15,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /*
@@ -31,6 +32,7 @@ public class RoomManagement {
     private String dbname = "RoomStock";
     private String[] header = {"ID", "Room Number", "Room Type", "Room Class", "Building", "Floor", "Number of bed", "Base price", "Status", "Data Created"};
     private Database db;
+
     private Room room;
     private int numOfRoom = 0;
 
@@ -60,10 +62,10 @@ public class RoomManagement {
         }
 
         Row row = sheet.createRow(numRow++);
-        
+
         row.createCell(0).setCellValue(String.valueOf(2000 + numRow - 1));
         room.setRoomID(String.valueOf(2000 + numRow - 1));
-        
+
         row.createCell(1).setCellValue(room.getRoomNumber());
         row.createCell(2).setCellValue(room.getRoomType());
         row.createCell(3).setCellValue(room.getRoomClass());
@@ -107,7 +109,7 @@ public class RoomManagement {
             numRow++;
         }
 
-        for (int i = 1; i <= numRow-1; i++) {
+        for (int i = 1; i <= numRow - 2; i++) {
             Room temp_room = new Room();
             for (int j = 0; j < 10; j++) {
                 Cell cell = sheet.getRow(i).getCell(j);
@@ -138,22 +140,61 @@ public class RoomManagement {
                 }
                 if (j == 8) {
                     temp_room.setStatus(cell.getStringCellValue());
-                     //System.out.println("J = 8 " + temp_room.getStatus());
+                    //System.out.println("J = 8 " + temp_room.getStatus());
                 }
             }
-            
-            if(temp_room.getStatus().equals("Unoccupied") && temp_room.getStatus() != null){
+
+            if (temp_room.getStatus().equals("Unoccupied") && temp_room.getStatus() != null) {
                 temp_room.setSelect(new CheckBox());
                 temp_room_list.add(temp_room);
                 //System.out.println("Room " + temp_room.getStatus());
             }
         }
-        
-        
+
         workbook.close();
         fileInput.close();
-        
+
         return temp_room_list;
+    }
+
+    public boolean makeOccupied(String roomID) throws FileNotFoundException, IOException {
+        db = new Database();
+        int numRow = db.getRowNum(roomID, dbname);
+
+        File excelFile = new File("src/db/" + dbname + ".xlsx");
+        FileInputStream fis = new FileInputStream(excelFile);
+
+        XSSFWorkbook workbook = new XSSFWorkbook(fis);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+
+        Cell cell = sheet.getRow(numRow).getCell(8);
+        cell.setCellValue("Occupied");
+
+        FileOutputStream fileOut = new FileOutputStream("src/db/" + dbname + ".xlsx");
+        workbook.write(fileOut);
+        fileOut.close();
+        fis.close();
+        return true;
+    }
+
+    public boolean makeUnoccupied(String roomID) throws FileNotFoundException, IOException {
+        db = new Database();
+        int numRow = db.getRowNum(roomID, dbname);
+
+        File excelFile = new File("src/db/" + dbname + ".xlsx");
+        FileInputStream fis = new FileInputStream(excelFile);
+
+        XSSFWorkbook workbook = new XSSFWorkbook(fis);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+
+        Cell cell = sheet.getRow(numRow).getCell(8);
+        cell.setCellValue("Unoccupied");
+
+        FileOutputStream fileOut = new FileOutputStream("src/db/" + dbname + ".xlsx");
+        workbook.write(fileOut);
+        fileOut.close();
+        fis.close();
+        return true;
     }
 
 }

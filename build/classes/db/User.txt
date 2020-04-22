@@ -1,6 +1,4 @@
 Id, Firstname, Lastname, Age, Gender, Email, Phone Number, Password, DataCreate, Last Edit, 
-10001, AAA, AAA, 19, ชาย, aaa@aaa.aa, 06354122, 123, 22-29-2020 01:29:46, 22-34-2020 01:34:05, 
-10002, Raweeroj, Thongdee, 19, ชาย, few_raweroj@hotmail.com, 0634162811, 1234, 22-34-2020 01:34:44, 22-35-2020 01:35:04, 
-10003, Noppawt, Khamyot, 10, ชาย, n@mail.com, 0123456789, 1230.0, 22-39-2020 01:39:19, 22-39-2020 01:39:19, 
-10004, bbb, bbc, 12, ชาย, m@mail.com, 123456, 000, 22-45-2020 01:45:45, 22-45-2020 01:45:45, 
+10001, Raweeroj, Thongdee, 19, ชาย, few_raweroj@hotmail.com, 0634162811, 1234, 22-48-2020 09:48:30, 22-56-2020 09:56:37, 
+10002, AAA, AAA, 18, ชาย, aaa@dd.aa, 06531216, aaa12, 22-18-2020 10:18:42, 22-18-2020 10:18:42, 
 

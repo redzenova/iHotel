@@ -464,32 +464,7 @@ public class Database {
 
         XSSFWorkbook workbook = new XSSFWorkbook(fis);
         XSSFSheet sheet = workbook.getSheetAt(0);
-
-//        Workbook workbook = new XSSFWorkbook(fis);
-//        Sheet sheet = workbook.getSheet("User");
-//        System.out.println("numRow " + numRow);
-//        System.out.println("id " + temp.getId());
-//        System.out.println("Firstname " + temp.getFirstName());
-//        System.out.println("Lastname " + temp.getLastName());
-//        System.out.println("Age " + temp.getAge());
-//        System.out.println("Gender " + temp.getGender());
-//        System.out.println("Email " + temp.getEmail());
-//        System.out.println("phone " + temp.getPhoneNumber());
-//        System.out.println("pass " + temp.getPassword());
-//        System.out.println("data " + temp.getDataCreate());
-//
-//        Row row2 = sheet.createRow(numRow);
-//        row2.createCell(1).setCellValue(temp.getFirstName());
-//        row2.createCell(2).setCellValue(temp.getLastName());
-//        row2.createCell(3).setCellValue(temp.getAge());
-//        row2.createCell(4).setCellValue(temp.getGender());
-//        row2.createCell(5).setCellValue(String.valueOf(temp.getEmail()));
-//        row2.createCell(6).setCellValue(temp.getPhoneNumber());
-//        row2.createCell(9).setCellValue(strDate);
-//
-//        System.out.println("Nameee " + row2.getCell(1).getStringCellValue());
-//        System.out.println("numRow " + numRow);
-//       
+   
         Iterator<Row> rowIt = sheet.iterator();
         while (rowIt.hasNext()) {
             Row row = rowIt.next();
