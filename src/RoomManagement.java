@@ -116,7 +116,7 @@ public class RoomManagement {
                 Cell cell = sheet.getRow(i).getCell(j);
 
                 if (j == 0) {
-                    temp_room.setRoomID(cell.getStringCellValue());
+                    temp_room.setRoomID(String.valueOf((int) cell.getNumericCellValue()));
                 }
                 if (j == 1) {
                     temp_room.setRoomNumber(String.valueOf((int) cell.getNumericCellValue()));
@@ -131,7 +131,7 @@ public class RoomManagement {
                     temp_room.setBuilding(cell.getStringCellValue());
                 }
                 if (j == 5) {
-                    temp_room.setFloor(String.valueOf(cell.getNumericCellValue()));
+                    temp_room.setFloor(String.valueOf((int) cell.getNumericCellValue()));
                 }
                 if (j == 6) {
                     temp_room.setNumBed((int) cell.getNumericCellValue());
@@ -142,6 +142,10 @@ public class RoomManagement {
                 if (j == 8) {
                     temp_room.setStatus(cell.getStringCellValue());
                     //System.out.println("J = 8 " + temp_room.getStatus());
+                }
+                if (j == 9) {
+                    temp_room.setDateCreated(cell.getStringCellValue());
+                   
                 }
             }
 
@@ -202,6 +206,22 @@ public class RoomManagement {
         fileOut.close();
         fis.close();
         return true;
+    }
+
+    public String getDbname() {
+        return dbname;
+    }
+
+    public void setDbname(String dbname) {
+        this.dbname = dbname;
+    }
+
+    public String[] getHeader() {
+        return header;
+    }
+
+    public void setHeader(String[] header) {
+        this.header = header;
     }
 
 }

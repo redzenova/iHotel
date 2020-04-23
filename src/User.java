@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -24,6 +25,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,6 +38,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.converter.FloatStringConverter;
+import javafx.util.converter.NumberStringConverter;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -610,48 +614,50 @@ public class User extends Application {
         C1.setReorderable(false);
         C1.setResizable(false);
         C1.setStyle("-fx-alignment: CENTER;");
-        
+
         TableColumn C2 = new TableColumn<>("Customer name");
         C2.setCellValueFactory(new PropertyValueFactory<Booking, String>("CustomerName"));
         C2.setMinWidth(150);
         C2.setReorderable(false);
         C2.setResizable(false);
         C2.setStyle("-fx-alignment: CENTER;");
-        
+
         TableColumn C3 = new TableColumn<>("Check In");
         C3.setCellValueFactory(new PropertyValueFactory<Booking, String>("CheckInDate"));
         C3.setMinWidth(120);
         C3.setReorderable(false);
         C3.setResizable(false);
         C3.setStyle("-fx-alignment: CENTER;");
-        
+
         TableColumn C4 = new TableColumn<>("Check Out");
         C4.setCellValueFactory(new PropertyValueFactory<Booking, String>("CheckOutDate"));
         C4.setMinWidth(120);
         C4.setReorderable(false);
         C4.setResizable(false);
         C4.setStyle("-fx-alignment: CENTER;");
-        
+
         TableColumn C5 = new TableColumn<>("Room Type");
         C5.setCellValueFactory(new PropertyValueFactory<Booking, String>("RoomType"));
         C5.setMinWidth(100);
         C5.setReorderable(false);
         C5.setResizable(false);
         C5.setStyle("-fx-alignment: CENTER;");
-        
+
         TableColumn C6 = new TableColumn<>("Room Class");
         C6.setCellValueFactory(new PropertyValueFactory<Booking, String>("RoomClass"));
         C6.setMinWidth(100);
         C6.setReorderable(false);
         C6.setResizable(false);
         C6.setStyle("-fx-alignment: CENTER;");
-        
+
         TableColumn C7 = new TableColumn<>("Total Price");
         C7.setCellValueFactory(new PropertyValueFactory<Booking, Double>("totalPrice"));
         C7.setMinWidth(100);
         C7.setReorderable(false);
         C7.setResizable(false);
         C7.setStyle("-fx-alignment: CENTER;");
+        C7.setEditable(true);
+        C7.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
 
         TableColumn C8 = new TableColumn<>("Booking Date");
         C8.setCellValueFactory(new PropertyValueFactory<Booking, String>("dateCreated"));
@@ -660,7 +666,17 @@ public class User extends Application {
         C8.setResizable(false);
         C8.setSortType(TableColumn.SortType.ASCENDING);
         C8.setStyle("-fx-alignment: CENTER;");
-        
+
+        tableView2.setEditable(true);
+        C8.setCellFactory(TextFieldTableCell.forTableColumn());
+        C8.setEditable(true);
+        C8.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Booking, String> t) {
+                System.out.println("New " + t.getNewValue());
+            }
+        });
+
         tableView2.getColumns().add(C1);
         tableView2.getColumns().add(C2);
         tableView2.getColumns().add(C3);

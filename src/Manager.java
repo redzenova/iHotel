@@ -1,11 +1,16 @@
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,7 +19,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,6 +31,15 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.converter.DefaultStringConverter;
+import javafx.util.converter.FloatStringConverter;
+import javafx.util.converter.NumberStringConverter;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.xmlbeans.impl.xb.xsdschema.BlockSet.Member2.Item;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -117,6 +133,7 @@ public class Manager extends Application {
 
         //[Component] - Room Management Table [Table]
         TableView room_table = new TableView();
+        room_table.setEditable(true);
 
         for (int t = 0; t < this.fetchRoom().size(); t++) {
             room_table.getItems().add(this.fetchRoom().get(t));
@@ -124,27 +141,66 @@ public class Manager extends Application {
 
         TableColumn room_tb_col1 = new TableColumn<>("ID");
         room_tb_col1.setCellValueFactory(new PropertyValueFactory<>("roomID"));
+        room_tb_col1.setCellFactory(TextFieldTableCell.forTableColumn());
+        room_tb_col1.setEditable(true);
 
         TableColumn room_tb_col2 = new TableColumn<>("Room Number");
         room_tb_col2.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
+        room_tb_col2.setCellFactory(TextFieldTableCell.forTableColumn());
+        room_tb_col2.setEditable(true);
 
         TableColumn room_tb_col3 = new TableColumn<>("Room Type");
         room_tb_col3.setCellValueFactory(new PropertyValueFactory<>("roomType"));
+        room_tb_col3.setCellFactory(TextFieldTableCell.forTableColumn());
+        room_tb_col3.setEditable(true);
 
         TableColumn room_tb_col4 = new TableColumn<>("Room Class");
         room_tb_col4.setCellValueFactory(new PropertyValueFactory<>("roomClass"));
+        room_tb_col4.setCellFactory(TextFieldTableCell.forTableColumn());
+        room_tb_col4.setEditable(true);
 
         TableColumn room_tb_col5 = new TableColumn<>("Building");
         room_tb_col5.setCellValueFactory(new PropertyValueFactory<>("building"));
+        room_tb_col5.setCellFactory(TextFieldTableCell.forTableColumn());
+        room_tb_col5.setEditable(true);
 
         TableColumn room_tb_col6 = new TableColumn<>("Floor");
         room_tb_col6.setCellValueFactory(new PropertyValueFactory<>("floor"));
+        room_tb_col6.setCellFactory(TextFieldTableCell.forTableColumn());
+        room_tb_col6.setEditable(true);
+
+        TableColumn room_tb_col10 = new TableColumn<>("Number of Bed");
+        room_tb_col10.setCellValueFactory(new PropertyValueFactory<>("numBed"));
+        room_tb_col10.setCellFactory(TextFieldTableCell.forTableColumn());
+        room_tb_col10.setEditable(true);
+        room_tb_col10.setVisible(false);
 
         TableColumn room_tb_col7 = new TableColumn<>("Base Price");
-        room_tb_col7.setCellValueFactory(new PropertyValueFactory<>("basePrice"));
+        room_tb_col7.setCellValueFactory(new PropertyValueFactory<Room, Double>("basePrice"));
+        room_tb_col7.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
+        room_tb_col7.setEditable(true);
+        room_tb_col7.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Room, Long>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Room, Long> t) {
+                t.getTableView().getItems().get(t.getTablePosition().getRow()).setBasePrice(t.getNewValue());
+            }
+        });
 
         TableColumn room_tb_col8 = new TableColumn<>("Status");
         room_tb_col8.setCellValueFactory(new PropertyValueFactory<>("Status"));
+        room_tb_col8.setCellFactory(ComboBoxTableCell.forTableColumn("Occupied", "Unoccupied"));
+        room_tb_col8.setEditable(true);
+        room_tb_col8.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Room, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Room, String> t) {
+                t.getTableView().getItems().get(t.getTablePosition().getRow()).setStatus(t.getNewValue());
+            }
+        });
+
+        TableColumn room_tb_col9 = new TableColumn<>("Data Created");
+        room_tb_col9.setCellValueFactory(new PropertyValueFactory<>("dateCreated"));
+        room_tb_col9.setCellFactory(TextFieldTableCell.forTableColumn());
+        room_tb_col9.setEditable(true);
 
         room_table.getColumns().add(room_tb_col1);
         room_table.getColumns().add(room_tb_col2);
@@ -152,8 +208,20 @@ public class Manager extends Application {
         room_table.getColumns().add(room_tb_col4);
         room_table.getColumns().add(room_tb_col5);
         room_table.getColumns().add(room_tb_col6);
+        room_table.getColumns().add(room_tb_col10);
         room_table.getColumns().add(room_tb_col7);
         room_table.getColumns().add(room_tb_col8);
+        room_table.getColumns().add(room_tb_col9);
+
+        //[Component] - Room Management - Save [Button]
+        Button save_room = new Button("Save");
+        save_room.setOnMouseClicked(eh -> {
+            try {
+                this.updateFile(room_table, "RoomStock");
+            } catch (IOException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
 
         //[Component] - Room Management [All Center Area]
         VBox center_room = new VBox();
@@ -161,8 +229,9 @@ public class Manager extends Application {
 
         center_room.setMargin(room_man_label, new Insets(10, 10, 10, 10));
         center_room.setMargin(room_table, new Insets(10, 10, 10, 10));
+        center_room.setMargin(save_room, new Insets(10, 10, 10, 10));
 
-        center_room.getChildren().addAll(room_man_label, Search_bar, room_table);
+        center_room.getChildren().addAll(room_man_label, Search_bar, room_table, save_room);
 
         //[Component] - Booking Management  [Label]
         Label book_man_label = new Label("Booking Management");
@@ -185,54 +254,86 @@ public class Manager extends Application {
         //[Component] - Booking Management Table [Table]
         TableView book_table = new TableView();
 
+        book_table.setEditable(true);
+
         for (int t = 0; t < this.fetchBooking().size(); t++) {
             book_table.getItems().add(this.fetchBooking().get(t));
         }
 
         TableColumn book_tb_col1 = new TableColumn<>("Booking ID");
         book_tb_col1.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        book_tb_col1.setCellFactory(TextFieldTableCell.forTableColumn());
+        book_tb_col1.setEditable(true);
 
         TableColumn book_tb_col2 = new TableColumn<>("Customer name");
         book_tb_col2.setCellValueFactory(new PropertyValueFactory<>("CustomerName"));
+        book_tb_col2.setCellFactory(TextFieldTableCell.forTableColumn());
+        book_tb_col2.setEditable(true);
 
         TableColumn book_tb_col3 = new TableColumn<>("Check-in Date");
         book_tb_col3.setCellValueFactory(new PropertyValueFactory<>("CheckInDate"));
+        book_tb_col3.setCellFactory(TextFieldTableCell.forTableColumn());
+        book_tb_col3.setEditable(true);
 
         TableColumn book_tb_col4 = new TableColumn<>("Check-out Date");
         book_tb_col4.setCellValueFactory(new PropertyValueFactory<>("CheckOutDate"));
+        book_tb_col4.setCellFactory(TextFieldTableCell.forTableColumn());
+        book_tb_col4.setEditable(true);
 
         TableColumn book_tb_col5 = new TableColumn<>("Room Type");
         book_tb_col5.setCellValueFactory(new PropertyValueFactory<>("RoomType"));
+        book_tb_col5.setCellFactory(TextFieldTableCell.forTableColumn());
+        book_tb_col5.setEditable(true);
 
         TableColumn book_tb_col6 = new TableColumn<>("Room Class");
         book_tb_col6.setCellValueFactory(new PropertyValueFactory<>("RoomClass"));
+        book_tb_col6.setCellFactory(TextFieldTableCell.forTableColumn());
+        book_tb_col6.setEditable(true);
 
         TableColumn book_tb_col7 = new TableColumn<>("Building");
         book_tb_col7.setCellValueFactory(new PropertyValueFactory<>("Building"));
+        book_tb_col7.setCellFactory(TextFieldTableCell.forTableColumn());
+        book_tb_col7.setEditable(true);
 
         TableColumn book_tb_col8 = new TableColumn<>("Floor");
         book_tb_col8.setCellValueFactory(new PropertyValueFactory<>("Floor"));
+        book_tb_col8.setCellFactory(TextFieldTableCell.forTableColumn());
+        book_tb_col8.setEditable(true);
 
         TableColumn book_tb_col9 = new TableColumn<>("Adult");
         book_tb_col9.setCellValueFactory(new PropertyValueFactory<>("Adult"));
+        book_tb_col9.setCellFactory(TextFieldTableCell.forTableColumn());
+        book_tb_col9.setEditable(true);
 
         TableColumn book_tb_col10 = new TableColumn<>("Young");
         book_tb_col10.setCellValueFactory(new PropertyValueFactory<>("Young"));
+        book_tb_col10.setCellFactory(TextFieldTableCell.forTableColumn());
+        book_tb_col10.setEditable(true);
 
         TableColumn book_tb_col11 = new TableColumn<>("Breakfast");
-        book_tb_col11.setCellValueFactory(new PropertyValueFactory<>("Breakfast"));
+        book_tb_col11.setCellValueFactory(new PropertyValueFactory<Booking, String>("Breakfast"));
+        book_tb_col11.setCellFactory(ComboBoxTableCell.forTableColumn("true", "false"));
+        book_tb_col11.setEditable(true);
 
         TableColumn book_tb_col12 = new TableColumn<>("Dinner");
         book_tb_col12.setCellValueFactory(new PropertyValueFactory<>("Dinner"));
+        book_tb_col12.setCellFactory(ComboBoxTableCell.forTableColumn("true", "false"));
+        book_tb_col12.setEditable(true);
 
         TableColumn book_tb_col13 = new TableColumn<>("Total Price");
         book_tb_col13.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
+        book_tb_col13.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
+        book_tb_col13.setEditable(true);
 
         TableColumn book_tb_col14 = new TableColumn<>("Status");
         book_tb_col14.setCellValueFactory(new PropertyValueFactory<>("Status"));
+        book_tb_col14.setCellFactory(TextFieldTableCell.forTableColumn());
+        book_tb_col14.setEditable(true);
 
         TableColumn book_tb_col15 = new TableColumn<>("Data Created");
         book_tb_col15.setCellValueFactory(new PropertyValueFactory<>("dateCreated"));
+        book_tb_col15.setCellFactory(TextFieldTableCell.forTableColumn());
+        book_tb_col15.setEditable(true);
 
         book_table.getColumns().add(book_tb_col1);
         book_table.getColumns().add(book_tb_col2);
@@ -426,13 +527,47 @@ public class Manager extends Application {
         window.show();
     }
 
-    private ArrayList fetchRoom() throws IOException {
+    private ObservableList fetchRoom() throws IOException {
         RoomManagement room_man = new RoomManagement();
-        return room_man.searchRoom(true);
+        return FXCollections.observableArrayList(room_man.searchRoom(true));
     }
 
     private ArrayList fetchBooking() throws IOException {
         return book_mg.searchBooking("ALL");
+    }
+
+    private void updateFile(TableView<Room> table, String dbname) throws FileNotFoundException, IOException {
+
+        File excelFile = new File("src/db/" + dbname + ".xlsx");
+
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet(dbname);
+
+        Row firstRow = sheet.createRow(0);
+
+        ///set titles of columns
+        for (int i = 0; i < table.getColumns().size(); i++) {
+            firstRow.createCell(i).setCellValue(table.getColumns().get(i).getText());
+        }
+
+        for (int row = 0; row < table.getItems().size(); row++) {
+            Row hssfRow = sheet.createRow(row + 1);
+            for (int col = 0; col < table.getColumns().size(); col++) {
+                Object celValue = table.getColumns().get(col).getCellObservableValue(row).getValue();
+                try {
+                    if (celValue != null && Double.parseDouble(celValue.toString()) != 0.0) {
+                        hssfRow.createCell(col).setCellValue(Double.parseDouble(celValue.toString()));
+                    }
+                } catch (NumberFormatException e) {
+                    hssfRow.createCell(col).setCellValue(celValue.toString());
+                }
+            }
+        }
+
+        // Write the output to a file
+        FileOutputStream fileOut = new FileOutputStream("src/db/" + dbname + ".xlsx");
+        workbook.write(fileOut);
+        fileOut.close();
     }
 
 }
