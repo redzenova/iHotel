@@ -86,7 +86,7 @@ public class BookingManagement {
         Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
         String strDate = dateFormat.format(date);
-        
+
         row.createCell(14).setCellValue(strDate);
 
         // Resize all columns to fit the content size
@@ -174,8 +174,13 @@ public class BookingManagement {
                 }
             }
 
-            if (temp.getCustomerName().equals(name)) {
-                temp_booking_list.add(temp);
+            if (name != "ALL") {
+                if (temp.getCustomerName().equals(name)) {
+                    temp_booking_list.add(temp);
+                }
+            }
+            if(name == "ALL"){
+                 temp_booking_list.add(temp);
             }
         }
 

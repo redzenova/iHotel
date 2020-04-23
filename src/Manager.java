@@ -118,9 +118,8 @@ public class Manager extends Application {
         //[Component] - Room Management Table [Table]
         TableView room_table = new TableView();
 
-        ArrayList<Room> roomList = this.fetchRoom();
-        for (int t = 0; t < roomList.size(); t++) {
-            room_table.getItems().add(roomList.get(t));
+        for (int t = 0; t < this.fetchRoom().size(); t++) {
+            room_table.getItems().add(this.fetchRoom().get(t));
         }
 
         TableColumn room_tb_col1 = new TableColumn<>("ID");
@@ -169,7 +168,7 @@ public class Manager extends Application {
         Label book_man_label = new Label("Booking Management");
         book_man_label.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 24));
 
-        //[Component] - Room Management - Search bar [Hbox]
+        //[Component] - Booking Management - Search bar [Hbox]
         TextField book_search_box = new TextField();
         book_search_box.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 18));
         book_search_box.setStyle("-fx-min-width: 400; ");
@@ -183,19 +182,73 @@ public class Manager extends Application {
         book_Search_bar.setAlignment(Pos.BASELINE_RIGHT);
         book_Search_bar.getChildren().addAll(book_search_box, book_search_bt);
 
-        //[Component] - Room Management Table [Table]
+        //[Component] - Booking Management Table [Table]
         TableView book_table = new TableView();
 
-        TableColumn book_tb_col1 = new TableColumn<>("รายการ");
-        book_tb_col1.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        TableColumn book_tb_col2 = new TableColumn<>("ลักษณะห้องพัก");
-        book_tb_col2.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        TableColumn book_tb_col3 = new TableColumn<>("รูปแบบ");
-        book_tb_col3.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        for (int t = 0; t < this.fetchBooking().size(); t++) {
+            book_table.getItems().add(this.fetchBooking().get(t));
+        }
+
+        TableColumn book_tb_col1 = new TableColumn<>("Booking ID");
+        book_tb_col1.setCellValueFactory(new PropertyValueFactory<>("ID"));
+
+        TableColumn book_tb_col2 = new TableColumn<>("Customer name");
+        book_tb_col2.setCellValueFactory(new PropertyValueFactory<>("CustomerName"));
+
+        TableColumn book_tb_col3 = new TableColumn<>("Check-in Date");
+        book_tb_col3.setCellValueFactory(new PropertyValueFactory<>("CheckInDate"));
+
+        TableColumn book_tb_col4 = new TableColumn<>("Check-out Date");
+        book_tb_col4.setCellValueFactory(new PropertyValueFactory<>("CheckOutDate"));
+
+        TableColumn book_tb_col5 = new TableColumn<>("Room Type");
+        book_tb_col5.setCellValueFactory(new PropertyValueFactory<>("RoomType"));
+
+        TableColumn book_tb_col6 = new TableColumn<>("Room Class");
+        book_tb_col6.setCellValueFactory(new PropertyValueFactory<>("RoomClass"));
+
+        TableColumn book_tb_col7 = new TableColumn<>("Building");
+        book_tb_col7.setCellValueFactory(new PropertyValueFactory<>("Building"));
+
+        TableColumn book_tb_col8 = new TableColumn<>("Floor");
+        book_tb_col8.setCellValueFactory(new PropertyValueFactory<>("Floor"));
+
+        TableColumn book_tb_col9 = new TableColumn<>("Adult");
+        book_tb_col9.setCellValueFactory(new PropertyValueFactory<>("Adult"));
+
+        TableColumn book_tb_col10 = new TableColumn<>("Young");
+        book_tb_col10.setCellValueFactory(new PropertyValueFactory<>("Young"));
+
+        TableColumn book_tb_col11 = new TableColumn<>("Breakfast");
+        book_tb_col11.setCellValueFactory(new PropertyValueFactory<>("Breakfast"));
+
+        TableColumn book_tb_col12 = new TableColumn<>("Dinner");
+        book_tb_col12.setCellValueFactory(new PropertyValueFactory<>("Dinner"));
+
+        TableColumn book_tb_col13 = new TableColumn<>("Total Price");
+        book_tb_col13.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
+
+        TableColumn book_tb_col14 = new TableColumn<>("Status");
+        book_tb_col14.setCellValueFactory(new PropertyValueFactory<>("Status"));
+
+        TableColumn book_tb_col15 = new TableColumn<>("Data Created");
+        book_tb_col15.setCellValueFactory(new PropertyValueFactory<>("dateCreated"));
 
         book_table.getColumns().add(book_tb_col1);
         book_table.getColumns().add(book_tb_col2);
         book_table.getColumns().add(book_tb_col3);
+        book_table.getColumns().add(book_tb_col4);
+        book_table.getColumns().add(book_tb_col5);
+        book_table.getColumns().add(book_tb_col6);
+        book_table.getColumns().add(book_tb_col7);
+        book_table.getColumns().add(book_tb_col8);
+        book_table.getColumns().add(book_tb_col9);
+        book_table.getColumns().add(book_tb_col10);
+        book_table.getColumns().add(book_tb_col11);
+        book_table.getColumns().add(book_tb_col12);
+        book_table.getColumns().add(book_tb_col13);
+        book_table.getColumns().add(book_tb_col14);
+        book_table.getColumns().add(book_tb_col15);
 
         //[Component] - Booking Management [All Center Area]
         VBox center_book = new VBox();
@@ -259,6 +312,16 @@ public class Manager extends Application {
         room_man_bt.setOnMouseClicked(e -> {
             room_man_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFA34D; -fx-text-fill: #000000");
 
+            room_table.getItems().clear();
+
+            try {
+                for (int t = 0; t < this.fetchRoom().size(); t++) {
+                    room_table.getItems().add(this.fetchRoom().get(t));
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
             border.setCenter(center_room);
             center_room.setVisible(true);
             center_book.setVisible(false);
@@ -284,6 +347,16 @@ public class Manager extends Application {
         //On mouse click
         booking_man_bt.setOnMouseClicked(e -> {
             booking_man_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFA34D; -fx-text-fill: #000000");
+
+            book_table.getItems().clear();
+
+            try {
+                for (int t = 0; t < this.fetchBooking().size(); t++) {
+                    book_table.getItems().add(this.fetchBooking().get(t));
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             border.setCenter(center_book);
             center_room.setVisible(false);
@@ -356,6 +429,10 @@ public class Manager extends Application {
     private ArrayList fetchRoom() throws IOException {
         RoomManagement room_man = new RoomManagement();
         return room_man.searchRoom(true);
+    }
+
+    private ArrayList fetchBooking() throws IOException {
+        return book_mg.searchBooking("ALL");
     }
 
 }

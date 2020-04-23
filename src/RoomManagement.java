@@ -80,6 +80,7 @@ public class RoomManagement {
 
         row.createCell(8).setCellValue(room.getStatus());
         row.createCell(9).setCellValue(strDate);
+        room.setDateCreated(strDate);
 
         // Resize all columns to fit the content size
         for (int i = 0; i < header.length; i++) {
@@ -150,6 +151,10 @@ public class RoomManagement {
                     temp_room_list.add(temp_room);
                     //System.out.println("Room " + temp_room.getStatus());
                 }
+            }
+            if (all == true) {
+                temp_room.setSelect(new CheckBox());
+                temp_room_list.add(temp_room);
             }
         }
 

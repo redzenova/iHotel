@@ -23,6 +23,7 @@ public class Room {
     private int numBed;
     private double basePrice;
     private CheckBox select;
+    private String dateCreated;
 
     public Room() {
     }
@@ -124,6 +125,14 @@ public class Room {
             return true;
         }
         return false;
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
     }
     
     
