@@ -531,7 +531,7 @@ public class User extends Application {
         RoomManagement room_man;
         room_man = new RoomManagement();
 
-        ArrayList<Room> roomList = room_man.searchRoom();
+        ArrayList<Room> roomList = room_man.searchRoom(false);
 
         TableColumn col1 = new TableColumn<>("ID");
         col1.setCellValueFactory(new PropertyValueFactory<Room, String>("roomID"));
@@ -721,9 +721,9 @@ public class User extends Application {
             Search_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFC997; -fx-text-fill: #ffffff");
 
             try {
-                for (int t = 0; t < room_man.searchRoom().size(); t++) {
+                for (int t = 0; t < room_man.searchRoom(false).size(); t++) {
                     try {
-                        tableView.getItems().add(room_man.searchRoom().get(t));
+                        tableView.getItems().add(room_man.searchRoom(false).get(t));
                     } catch (IOException ex) {
                         Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -741,11 +741,11 @@ public class User extends Application {
 
         });
 
-        for (int t = 0; t < room_man.searchRoom().size(); t++) {
-            tableView.getItems().add(room_man.searchRoom().get(t));
+        for (int t = 0; t < room_man.searchRoom(false).size(); t++) {
+            tableView.getItems().add(room_man.searchRoom(false).get(t));
         }
 
-        for (int t = 0; t < room_man.searchRoom().size(); t++) {
+        for (int t = 0; t < room_man.searchRoom(false).size(); t++) {
             Room r = (Room) tableView.getItems().get(t);
             r.getSelect().setOnAction(e -> {
                 if (r.getSelect().isSelected()) {
@@ -771,7 +771,7 @@ public class User extends Application {
 
                 if (this.numSelect == room_num.getValue()) {
                     try {
-                        for (int h = 0; h < room_man.searchRoom().size(); h++) {
+                        for (int h = 0; h < room_man.searchRoom(false).size(); h++) {
                             Room r2 = (Room) tableView.getItems().get(h);
                             if (!r2.getSelect().isSelected()) {
                                 r2.getSelect().setDisable(true);
@@ -782,7 +782,7 @@ public class User extends Application {
                     }
                 } else {
                     try {
-                        for (int h = 0; h < room_man.searchRoom().size(); h++) {
+                        for (int h = 0; h < room_man.searchRoom(false).size(); h++) {
                             Room r2 = (Room) tableView.getItems().get(h);
                             if (!r2.getSelect().isSelected()) {
                                 r2.getSelect().setDisable(false);
@@ -818,7 +818,7 @@ public class User extends Application {
 
             ArrayList<Room> roomCheckList = new ArrayList();
             try {
-                for (int ii = 0; ii < room_man.searchRoom().size(); ii++) {
+                for (int ii = 0; ii < room_man.searchRoom(false).size(); ii++) {
                     Room roomCheck = (Room) tableView.getItems().get(ii);
                     if (roomCheck.isSelect()) {
                         roomCheckList.add(roomCheck);

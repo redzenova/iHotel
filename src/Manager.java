@@ -355,7 +355,7 @@ public class Manager extends Application {
 
     private ArrayList fetchRoom() throws IOException {
         RoomManagement room_man = new RoomManagement();
-        return room_man.searchRoom();
+        return room_man.searchRoom(true);
     }
 
 }
