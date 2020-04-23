@@ -42,7 +42,7 @@ public class Account {
         this.password = password;
         
         Date date = Calendar.getInstance().getTime();  
-        DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");  
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");  
         String strDate = dateFormat.format(date); 
         
         this.dataCreate = strDate;

@@ -75,7 +75,7 @@ public class RoomManagement {
         row.createCell(7).setCellValue(room.getBasePrice());
 
         Date date = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
         String strDate = dateFormat.format(date);
 
         row.createCell(8).setCellValue(room.getStatus());
@@ -92,7 +92,7 @@ public class RoomManagement {
         fileOut.close();
     }
 
-    public ArrayList searchRoom() throws FileNotFoundException, IOException {
+    public ArrayList searchRoom(boolean all) throws FileNotFoundException, IOException {
         int numRow = 0;
         ArrayList<Room> temp_room_list = new ArrayList();
 
@@ -144,10 +144,12 @@ public class RoomManagement {
                 }
             }
 
-            if (temp_room.getStatus().equals("Unoccupied") && temp_room.getStatus() != null) {
-                temp_room.setSelect(new CheckBox());
-                temp_room_list.add(temp_room);
-                //System.out.println("Room " + temp_room.getStatus());
+            if (all == false) {
+                if (temp_room.getStatus().equals("Unoccupied") && temp_room.getStatus() != null) {
+                    temp_room.setSelect(new CheckBox());
+                    temp_room_list.add(temp_room);
+                    //System.out.println("Room " + temp_room.getStatus());
+                }
             }
         }
 

@@ -600,33 +600,67 @@ public class User extends Application {
         history_booking.setStyle("-fx-text-fill: #ffffff");
         history_booking.setVisible(false);
 
-        BookingManagement book_mg = new BookingManagement();
-
-        ArrayList<Booking> bookingList = book_mg.searchBooking(acc_temp.getFirstName() + "   " + acc_temp.getLastName());
+        ArrayList<Booking> bookingList = this.fetchData();
 
         TableView tableView2 = new TableView();
 
         TableColumn C1 = new TableColumn<>("Booking ID");
         C1.setCellValueFactory(new PropertyValueFactory<Booking, String>("ID"));
-
+        C1.setMinWidth(50);
+        C1.setReorderable(false);
+        C1.setResizable(false);
+        C1.setStyle("-fx-alignment: CENTER;");
+        
         TableColumn C2 = new TableColumn<>("Customer name");
-        C2.setCellValueFactory(new PropertyValueFactory<>("CustomerName"));
-
+        C2.setCellValueFactory(new PropertyValueFactory<Booking, String>("CustomerName"));
+        C2.setMinWidth(150);
+        C2.setReorderable(false);
+        C2.setResizable(false);
+        C2.setStyle("-fx-alignment: CENTER;");
+        
         TableColumn C3 = new TableColumn<>("Check In");
-        C3.setCellValueFactory(new PropertyValueFactory<>("CheckInDate"));
-
+        C3.setCellValueFactory(new PropertyValueFactory<Booking, String>("CheckInDate"));
+        C3.setMinWidth(120);
+        C3.setReorderable(false);
+        C3.setResizable(false);
+        C3.setStyle("-fx-alignment: CENTER;");
+        
         TableColumn C4 = new TableColumn<>("Check Out");
-        C4.setCellValueFactory(new PropertyValueFactory<>("CheckOutDate"));
-
+        C4.setCellValueFactory(new PropertyValueFactory<Booking, String>("CheckOutDate"));
+        C4.setMinWidth(120);
+        C4.setReorderable(false);
+        C4.setResizable(false);
+        C4.setStyle("-fx-alignment: CENTER;");
+        
         TableColumn C5 = new TableColumn<>("Room Type");
-        C5.setCellValueFactory(new PropertyValueFactory<>("RoomType"));
-
+        C5.setCellValueFactory(new PropertyValueFactory<Booking, String>("RoomType"));
+        C5.setMinWidth(100);
+        C5.setReorderable(false);
+        C5.setResizable(false);
+        C5.setStyle("-fx-alignment: CENTER;");
+        
         TableColumn C6 = new TableColumn<>("Room Class");
-        C6.setCellValueFactory(new PropertyValueFactory<>("RoomClass"));
-
+        C6.setCellValueFactory(new PropertyValueFactory<Booking, String>("RoomClass"));
+        C6.setMinWidth(100);
+        C6.setReorderable(false);
+        C6.setResizable(false);
+        C6.setStyle("-fx-alignment: CENTER;");
+        
         TableColumn C7 = new TableColumn<>("Total Price");
-        C7.setCellValueFactory(new PropertyValueFactory<Booking , Double>("totalPrice"));
+        C7.setCellValueFactory(new PropertyValueFactory<Booking, Double>("totalPrice"));
+        C7.setMinWidth(100);
+        C7.setReorderable(false);
+        C7.setResizable(false);
+        C7.setStyle("-fx-alignment: CENTER;");
 
+        TableColumn C8 = new TableColumn<>("Booking Date");
+        C8.setCellValueFactory(new PropertyValueFactory<Booking, String>("dateCreated"));
+        C8.setMinWidth(150);
+        C8.setReorderable(false);
+        C8.setResizable(false);
+        C8.setSortType(TableColumn.SortType.ASCENDING);
+        C8.setStyle("-fx-alignment: CENTER;");
+        
         tableView2.getColumns().add(C1);
         tableView2.getColumns().add(C2);
         tableView2.getColumns().add(C3);
@@ -634,6 +668,7 @@ public class User extends Application {
         tableView2.getColumns().add(C5);
         tableView2.getColumns().add(C6);
         tableView2.getColumns().add(C7);
+        tableView2.getColumns().add(C8);
 
         VBox booking_status = new VBox(tableView2);
         booking_status.setVisible(false);
@@ -810,6 +845,8 @@ public class User extends Application {
             tableView.getItems().clear();
             roomList.clear();
             roomCheckList.clear();
+            check_in_date.getEditor().clear();
+            check_out_date.getEditor().clear();
             this.numSelect = 0;
             this.NumberOfDay = 0;
             this.summery_price = 0;
@@ -840,9 +877,20 @@ public class User extends Application {
         //On mouse click
         status_bt.setOnMouseClicked(e -> {
             status_bt.setStyle(" -fx-background-color: #1EB2A6; -fx-text-fill: #ffffff");
+            try {
+                this.fetchData();
+            } catch (IOException ex) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
-            for (int t = 0; t < bookingList.size(); t++) {
-                tableView2.getItems().add(bookingList.get(t));
+            tableView2.getItems().clear();
+
+            try {
+                for (int t = 0; t < this.fetchData().size(); t++) {
+                    tableView2.getItems().add(this.fetchData().get(t));
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             searchRoom.setVisible(false);
@@ -875,6 +923,8 @@ public class User extends Application {
             booking_status.setVisible(true);
             status_bg.setVisible(true);
             status_bt.setEffect(new DropShadow());
+
+            bookingList.clear();
         });
         //============================================================
 
@@ -1416,6 +1466,11 @@ public class User extends Application {
         Scene user_page = new Scene(rootPane, 1440, 900);
         window.setScene(user_page);
         window.show();
+    }
+
+    private ArrayList fetchData() throws IOException {
+        BookingManagement book_mg = new BookingManagement();
+        return book_mg.searchBooking(acc_temp.getFirstName() + "   " + acc_temp.getLastName());
     }
 
 }

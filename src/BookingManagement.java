@@ -84,8 +84,9 @@ public class BookingManagement {
         row.createCell(13).setCellValue(book.getStatus());
 
         Date date = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
         String strDate = dateFormat.format(date);
+        
         row.createCell(14).setCellValue(strDate);
 
         // Resize all columns to fit the content size
@@ -121,9 +122,9 @@ public class BookingManagement {
             numRow++;
         }
 
-        for (int i = 1; i <= numRow - 2; i++) {
+        for (int i = 1; i <= numRow - 1; i++) {
             Booking temp = new Booking();
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < 15; j++) {
                 Cell cell = sheet.getRow(i).getCell(j);
 
                 if (j == 0) {

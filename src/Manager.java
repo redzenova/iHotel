@@ -1,6 +1,8 @@
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -37,9 +39,11 @@ public class Manager extends Application {
     private String username;
     private String password;
     private Stage window;
-    private iHotel main_page;
 
-    public static void main2(String[] args) {
+    private iHotel main_page;
+    private BookingManagement book_mg = new BookingManagement();
+
+    public static void main(String[] args) {
         launch(args);
     }
 
@@ -114,17 +118,34 @@ public class Manager extends Application {
         //[Component] - Room Management Table [Table]
         TableView room_table = new TableView();
 
-        TableColumn room_tb_col1 = new TableColumn<>("รายการ");
-        room_tb_col1.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        TableColumn room_tb_col2 = new TableColumn<>("ลักษณะห้องพัก");
-        room_tb_col2.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        TableColumn room_tb_col3 = new TableColumn<>("รูปแบบ");
-        room_tb_col3.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        TableColumn room_tb_col4 = new TableColumn<>("ราตา ต่อห้อง ต่อคืน");
-        room_tb_col4.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        TableColumn room_tb_col5 = new TableColumn<>("ห้อง");
-        room_tb_col5.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        TableColumn room_tb_col6 = new TableColumn<>("จองเลย");
+        ArrayList<Room> roomList = this.fetchRoom();
+        for (int t = 0; t < roomList.size(); t++) {
+            room_table.getItems().add(roomList.get(t));
+        }
+
+        TableColumn room_tb_col1 = new TableColumn<>("ID");
+        room_tb_col1.setCellValueFactory(new PropertyValueFactory<>("roomID"));
+
+        TableColumn room_tb_col2 = new TableColumn<>("Room Number");
+        room_tb_col2.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
+
+        TableColumn room_tb_col3 = new TableColumn<>("Room Type");
+        room_tb_col3.setCellValueFactory(new PropertyValueFactory<>("roomType"));
+
+        TableColumn room_tb_col4 = new TableColumn<>("Room Class");
+        room_tb_col4.setCellValueFactory(new PropertyValueFactory<>("roomClass"));
+
+        TableColumn room_tb_col5 = new TableColumn<>("Building");
+        room_tb_col5.setCellValueFactory(new PropertyValueFactory<>("building"));
+
+        TableColumn room_tb_col6 = new TableColumn<>("Floor");
+        room_tb_col6.setCellValueFactory(new PropertyValueFactory<>("floor"));
+
+        TableColumn room_tb_col7 = new TableColumn<>("Base Price");
+        room_tb_col7.setCellValueFactory(new PropertyValueFactory<>("basePrice"));
+
+        TableColumn room_tb_col8 = new TableColumn<>("Status");
+        room_tb_col8.setCellValueFactory(new PropertyValueFactory<>("Status"));
 
         room_table.getColumns().add(room_tb_col1);
         room_table.getColumns().add(room_tb_col2);
@@ -132,6 +153,8 @@ public class Manager extends Application {
         room_table.getColumns().add(room_tb_col4);
         room_table.getColumns().add(room_tb_col5);
         room_table.getColumns().add(room_tb_col6);
+        room_table.getColumns().add(room_tb_col7);
+        room_table.getColumns().add(room_tb_col8);
 
         //[Component] - Room Management [All Center Area]
         VBox center_room = new VBox();
@@ -208,7 +231,6 @@ public class Manager extends Application {
         checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<>("firstName"));
 
         checkin_table.getColumns().add(checkin_tb_col1);
-
 
         //[Component] - Booking Management [All Center Area]
         VBox center_checkin = new VBox();
@@ -329,6 +351,11 @@ public class Manager extends Application {
         Scene user_page = new Scene(rootPane, 1440, 900);
         window.setScene(user_page);
         window.show();
+    }
+
+    private ArrayList fetchRoom() throws IOException {
+        RoomManagement room_man = new RoomManagement();
+        return room_man.searchRoom();
     }
 
 }
