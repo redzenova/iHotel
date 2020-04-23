@@ -116,7 +116,13 @@ public class RoomManagement {
                 Cell cell = sheet.getRow(i).getCell(j);
 
                 if (j == 0) {
-                    temp_room.setRoomID(String.valueOf((int) cell.getNumericCellValue()));
+
+                    if(cell.getCellType().equals(cell.getCellType().NUMERIC)){
+                        temp_room.setRoomID(String.valueOf((int) cell.getNumericCellValue()));
+                    }
+                    else if(cell.getCellType().equals(cell.getCellType().STRING)){
+                        temp_room.setRoomID(cell.getStringCellValue());
+                    }
                 }
                 if (j == 1) {
                     temp_room.setRoomNumber(String.valueOf((int) cell.getNumericCellValue()));
@@ -145,7 +151,7 @@ public class RoomManagement {
                 }
                 if (j == 9) {
                     temp_room.setDateCreated(cell.getStringCellValue());
-                   
+
                 }
             }
 
