@@ -182,28 +182,28 @@ public class Database {
                     Cell cell = cellIterator.next();
                     switch (cell.getCellType()) {
                         case STRING:
-                            System.out.print(cell.getStringCellValue());
+                            //System.out.print(cell.getStringCellValue());
                             sb.append(cell.getStringCellValue() + ", ");
                             break;
                         case BOOLEAN:
-                            System.out.print(cell.getBooleanCellValue());
+                            //System.out.print(cell.getBooleanCellValue());
                             sb.append(String.valueOf(cell.getBooleanCellValue() + ", "));
                             break;
                         case NUMERIC:
-                            System.out.print(cell.getNumericCellValue());
+                            //System.out.print(cell.getNumericCellValue());
                             sb.append(String.valueOf(cell.getNumericCellValue() + ", "));
                             break;
                         case FORMULA:
-                            System.out.print(cell.getCellFormula());
+                            //System.out.print(cell.getCellFormula());
                             sb.append(String.valueOf(cell.getCellFormula() + ", "));
                             break;
                         default:
-                            System.out.print(cell.getStringCellValue());
+                            //System.out.print(cell.getStringCellValue());
                             sb.append(cell.getStringCellValue() + ", ");
                     }
-                    System.out.print(" - ");
+                    //System.out.print(" - ");
                 }
-                System.out.println();
+                //System.out.println();
                 sb.append("\n");
             }
             workbook.close();

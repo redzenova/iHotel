@@ -132,6 +132,27 @@ public class Manager extends Application {
         Search_bar.setAlignment(Pos.BASELINE_RIGHT);
         Search_bar.getChildren().addAll(search_box, search_bt);
 
+//        //[Component] - Room Management - add Room bar [Hbox]
+        TextField ID = new TextField();
+        TextField Room_Number = new TextField();
+        TextField Room_Type = new TextField();
+        TextField Room_Class = new TextField();
+        TextField Building = new TextField();
+        TextField Floor = new TextField();
+        TextField NumOfBed = new TextField();
+        NumOfBed.setText("1");
+        TextField Base_price = new TextField();
+        TextField Status = new TextField();
+      
+
+        Button add_room = new Button("เพิ่ม");
+        add_room.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
+
+        HBox add_room_bar = new HBox(2);
+        add_room_bar.setAlignment(Pos.BASELINE_RIGHT);
+        add_room_bar.getChildren().addAll(ID, Room_Number, Room_Type, Room_Class,
+                Building, Floor,Base_price, Status);
+
         //[Component] - Room Management Table [Table]
         TableView<Room> room_table = new TableView();
         room_table.setEditable(true);
@@ -144,11 +165,19 @@ public class Manager extends Application {
         room_tb_col1.setCellValueFactory(new PropertyValueFactory<>("roomID"));
         room_tb_col1.setCellFactory(TextFieldTableCell.forTableColumn());
         room_tb_col1.setEditable(false);
+        room_tb_col1.setMinWidth(50);
+        room_tb_col1.setReorderable(false);
+        room_tb_col1.setResizable(false);
+        room_tb_col1.setStyle("-fx-alignment: CENTER;");
 
         TableColumn room_tb_col2 = new TableColumn<>("Room Number");
         room_tb_col2.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
         room_tb_col2.setCellFactory(TextFieldTableCell.forTableColumn());
         room_tb_col2.setEditable(true);
+        room_tb_col2.setMinWidth(100);
+        room_tb_col2.setReorderable(false);
+        room_tb_col2.setResizable(false);
+        room_tb_col2.setStyle("-fx-alignment: CENTER;");
         room_tb_col2.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Room, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Room, String> t) {
@@ -161,6 +190,10 @@ public class Manager extends Application {
         room_tb_col3.setCellFactory(TextFieldTableCell.forTableColumn());
         room_tb_col3.setEditable(true);
         room_tb_col3.setCellFactory(ComboBoxTableCell.forTableColumn("Superior", "Delux", "Junior Suite", "Royal Suite"));
+        room_tb_col3.setMinWidth(100);
+        room_tb_col3.setReorderable(false);
+        room_tb_col3.setResizable(false);
+        room_tb_col3.setStyle("-fx-alignment: CENTER;");
         room_tb_col3.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Room, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Room, String> t) {
@@ -173,6 +206,10 @@ public class Manager extends Application {
         room_tb_col4.setCellFactory(TextFieldTableCell.forTableColumn());
         room_tb_col4.setCellFactory(ComboBoxTableCell.forTableColumn("Normal", "Premiun"));
         room_tb_col4.setEditable(true);
+        room_tb_col4.setMinWidth(100);
+        room_tb_col4.setReorderable(false);
+        room_tb_col4.setResizable(false);
+        room_tb_col4.setStyle("-fx-alignment: CENTER;");
         room_tb_col4.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Room, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Room, String> t) {
@@ -185,6 +222,10 @@ public class Manager extends Application {
         room_tb_col5.setCellFactory(TextFieldTableCell.forTableColumn());
         room_tb_col5.setCellFactory(ComboBoxTableCell.forTableColumn("A"));
         room_tb_col5.setEditable(true);
+        room_tb_col5.setMinWidth(100);
+        room_tb_col5.setReorderable(false);
+        room_tb_col5.setResizable(false);
+        room_tb_col5.setStyle("-fx-alignment: CENTER;");
         room_tb_col5.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Room, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Room, String> t) {
@@ -196,6 +237,10 @@ public class Manager extends Application {
         room_tb_col6.setCellValueFactory(new PropertyValueFactory<>("floor"));
         room_tb_col6.setCellFactory(TextFieldTableCell.forTableColumn());
         room_tb_col6.setEditable(true);
+        room_tb_col2.setMinWidth(50);
+        room_tb_col6.setReorderable(false);
+        room_tb_col6.setResizable(false);
+        room_tb_col6.setStyle("-fx-alignment: CENTER;");
         room_tb_col6.setCellFactory(ComboBoxTableCell.forTableColumn("1", "2", "3", "4", "5", "6", "7", "8", "9"));
         room_tb_col6.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Room, String>>() {
             @Override
@@ -214,6 +259,10 @@ public class Manager extends Application {
         room_tb_col7.setCellValueFactory(new PropertyValueFactory<Room, Double>("basePrice"));
         room_tb_col7.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
         room_tb_col7.setEditable(true);
+        room_tb_col7.setMinWidth(100);
+        room_tb_col7.setReorderable(false);
+        room_tb_col7.setResizable(false);
+        room_tb_col7.setStyle("-fx-alignment: CENTER;");
         room_tb_col7.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Room, Long>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Room, Long> t) {
@@ -225,6 +274,10 @@ public class Manager extends Application {
         room_tb_col8.setCellValueFactory(new PropertyValueFactory<>("Status"));
         room_tb_col8.setCellFactory(ComboBoxTableCell.forTableColumn("Occupied", "Unoccupied"));
         room_tb_col8.setEditable(true);
+        room_tb_col8.setMinWidth(100);
+        room_tb_col8.setReorderable(false);
+        room_tb_col8.setResizable(false);
+        room_tb_col8.setStyle("-fx-alignment: CENTER;");
         room_tb_col8.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Room, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Room, String> t) {
@@ -236,6 +289,10 @@ public class Manager extends Application {
         room_tb_col9.setCellValueFactory(new PropertyValueFactory<>("dateCreated"));
         room_tb_col9.setCellFactory(TextFieldTableCell.forTableColumn());
         room_tb_col9.setEditable(true);
+        room_tb_col9.setMinWidth(150);
+        room_tb_col9.setReorderable(false);
+        room_tb_col9.setResizable(false);
+        room_tb_col9.setStyle("-fx-alignment: CENTER;");
         room_tb_col9.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Room, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Room, String> t) {
@@ -326,11 +383,19 @@ public class Manager extends Application {
         book_tb_col1.setCellValueFactory(new PropertyValueFactory<>("ID"));
         book_tb_col1.setCellFactory(TextFieldTableCell.forTableColumn());
         book_tb_col1.setEditable(false);
+        book_tb_col1.setMinWidth(50);
+        book_tb_col1.setReorderable(false);
+        book_tb_col1.setResizable(false);
+        book_tb_col1.setStyle("-fx-alignment: CENTER;");
 
         TableColumn book_tb_col2 = new TableColumn<>("Customer name");
         book_tb_col2.setCellValueFactory(new PropertyValueFactory<>("CustomerName"));
         book_tb_col2.setCellFactory(TextFieldTableCell.forTableColumn());
         book_tb_col2.setEditable(true);
+        book_tb_col2.setMinWidth(140);
+        book_tb_col2.setReorderable(false);
+        book_tb_col2.setResizable(false);
+        book_tb_col2.setStyle("-fx-alignment: CENTER;");
         book_tb_col2.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Booking, String> t) {
@@ -342,6 +407,10 @@ public class Manager extends Application {
         book_tb_col3.setCellValueFactory(new PropertyValueFactory<>("CheckInDate"));
         book_tb_col3.setCellFactory(TextFieldTableCell.forTableColumn());
         book_tb_col3.setEditable(true);
+        book_tb_col3.setMinWidth(90);
+        book_tb_col3.setReorderable(false);
+        book_tb_col3.setResizable(false);
+        book_tb_col3.setStyle("-fx-alignment: CENTER;");
         book_tb_col3.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Booking, String> t) {
@@ -353,6 +422,10 @@ public class Manager extends Application {
         book_tb_col4.setCellValueFactory(new PropertyValueFactory<>("CheckOutDate"));
         book_tb_col4.setCellFactory(TextFieldTableCell.forTableColumn());
         book_tb_col4.setEditable(true);
+        book_tb_col4.setMinWidth(100);
+        book_tb_col4.setReorderable(false);
+        book_tb_col4.setResizable(false);
+        book_tb_col4.setStyle("-fx-alignment: CENTER;");
         book_tb_col4.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Booking, String> t) {
@@ -364,6 +437,10 @@ public class Manager extends Application {
         book_tb_col5.setCellValueFactory(new PropertyValueFactory<>("RoomType"));
         book_tb_col5.setCellFactory(ComboBoxTableCell.forTableColumn("Superior", "Delux", "Junior Suite", "Royal Suite"));
         book_tb_col5.setEditable(true);
+        book_tb_col5.setMinWidth(80);
+        book_tb_col5.setReorderable(false);
+        book_tb_col5.setResizable(false);
+        book_tb_col5.setStyle("-fx-alignment: CENTER;");
         book_tb_col5.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Booking, String> t) {
@@ -375,6 +452,10 @@ public class Manager extends Application {
         book_tb_col6.setCellValueFactory(new PropertyValueFactory<>("RoomClass"));
         book_tb_col6.setCellFactory(ComboBoxTableCell.forTableColumn("Normal", "Premiun"));
         book_tb_col6.setEditable(true);
+        book_tb_col6.setMinWidth(80);
+        book_tb_col6.setReorderable(false);
+        book_tb_col6.setResizable(false);
+        book_tb_col6.setStyle("-fx-alignment: CENTER;");
         book_tb_col6.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Booking, String> t) {
@@ -386,6 +467,10 @@ public class Manager extends Application {
         book_tb_col7.setCellValueFactory(new PropertyValueFactory<>("Building"));
         book_tb_col7.setCellFactory(ComboBoxTableCell.forTableColumn("A"));
         book_tb_col7.setEditable(true);
+        book_tb_col7.setMaxWidth(60);
+        book_tb_col7.setReorderable(false);
+        book_tb_col7.setResizable(false);
+        book_tb_col7.setStyle("-fx-alignment: CENTER;");
         book_tb_col7.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Booking, String> t) {
@@ -397,6 +482,10 @@ public class Manager extends Application {
         book_tb_col8.setCellValueFactory(new PropertyValueFactory<>("Floor"));
         book_tb_col8.setCellFactory(ComboBoxTableCell.forTableColumn("1", "2", "3", "4", "5", "6", "7", "8", "9"));
         book_tb_col8.setEditable(true);
+        book_tb_col8.setMaxWidth(50);
+        book_tb_col8.setReorderable(false);
+        book_tb_col8.setResizable(false);
+        book_tb_col8.setStyle("-fx-alignment: CENTER;");
         book_tb_col8.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Booking, String> t) {
@@ -408,6 +497,10 @@ public class Manager extends Application {
         book_tb_col9.setCellValueFactory(new PropertyValueFactory<>("Adult"));
         book_tb_col9.setCellFactory(TextFieldTableCell.forTableColumn());
         book_tb_col9.setEditable(true);
+        book_tb_col9.setMaxWidth(50);
+        book_tb_col9.setReorderable(false);
+        book_tb_col9.setResizable(false);
+        book_tb_col9.setStyle("-fx-alignment: CENTER;");
         book_tb_col9.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Booking, String> t) {
@@ -419,6 +512,10 @@ public class Manager extends Application {
         book_tb_col10.setCellValueFactory(new PropertyValueFactory<>("Young"));
         book_tb_col10.setCellFactory(TextFieldTableCell.forTableColumn());
         book_tb_col10.setEditable(true);
+        book_tb_col10.setMaxWidth(60);
+        book_tb_col10.setReorderable(false);
+        book_tb_col10.setResizable(false);
+        book_tb_col10.setStyle("-fx-alignment: CENTER;");
         book_tb_col10.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Booking, String> t) {
@@ -430,6 +527,10 @@ public class Manager extends Application {
         book_tb_col11.setCellValueFactory(new PropertyValueFactory<Booking, String>("Breakfast"));
         book_tb_col11.setCellFactory(ComboBoxTableCell.forTableColumn("true", "false"));
         book_tb_col11.setEditable(true);
+        book_tb_col11.setMaxWidth(65);
+        book_tb_col11.setReorderable(false);
+        book_tb_col11.setResizable(false);
+        book_tb_col11.setStyle("-fx-alignment: CENTER;");
         book_tb_col11.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Booking, String> t) {
@@ -441,6 +542,10 @@ public class Manager extends Application {
         book_tb_col12.setCellValueFactory(new PropertyValueFactory<>("Dinner"));
         book_tb_col12.setCellFactory(ComboBoxTableCell.forTableColumn("true", "false"));
         book_tb_col12.setEditable(true);
+        book_tb_col12.setMaxWidth(70);
+        book_tb_col12.setReorderable(false);
+        book_tb_col12.setResizable(false);
+        book_tb_col12.setStyle("-fx-alignment: CENTER;");
         book_tb_col12.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Booking, String> t) {
@@ -452,6 +557,10 @@ public class Manager extends Application {
         book_tb_col13.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
         book_tb_col13.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
         book_tb_col13.setEditable(true);
+        book_tb_col13.setMinWidth(80);
+        book_tb_col13.setReorderable(false);
+        book_tb_col13.setResizable(false);
+        book_tb_col13.setStyle("-fx-alignment: CENTER;");
         book_tb_col13.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, Long>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Booking, Long> t) {
@@ -463,6 +572,10 @@ public class Manager extends Application {
         book_tb_col14.setCellValueFactory(new PropertyValueFactory<>("Status"));
         book_tb_col14.setCellFactory(ComboBoxTableCell.forTableColumn("Booked", "Check-IN", "Check-OUT"));
         book_tb_col14.setEditable(true);
+        book_tb_col14.setMinWidth(80);
+        book_tb_col14.setReorderable(false);
+        book_tb_col14.setResizable(false);
+        book_tb_col14.setStyle("-fx-alignment: CENTER;");
         book_tb_col14.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Booking, String> t) {
@@ -474,6 +587,10 @@ public class Manager extends Application {
         book_tb_col15.setCellValueFactory(new PropertyValueFactory<>("dateCreated"));
         book_tb_col15.setCellFactory(TextFieldTableCell.forTableColumn());
         book_tb_col15.setEditable(true);
+        book_tb_col15.setMinWidth(140);
+        book_tb_col15.setReorderable(false);
+        book_tb_col15.setResizable(false);
+        book_tb_col15.setStyle("-fx-alignment: CENTER;");
         book_tb_col15.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Booking, String> t) {
@@ -500,15 +617,15 @@ public class Manager extends Application {
         //[Component] - Room Management - Save [Button]
         Button save_book = new Button("Save");
         save_book.setOnMouseClicked(eh -> {
-            
+
             try {
-                this.updateBook(book_table, "Book2");
+                this.updateBook(book_table, "BookingStock");
             } catch (IOException ex) {
                 Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InvalidFormatException ex) {
                 Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             book_table.getItems().clear();
             try {
                 for (int t = 0; t < this.fetchBooking().size(); t++) {
@@ -537,7 +654,7 @@ public class Manager extends Application {
         center_book.setMargin(save_book, new Insets(10, 10, 10, 10));
         center_book.setMargin(del_book, new Insets(10, 10, 10, 10));
 
-        center_book.getChildren().addAll(book_man_label, book_Search_bar, book_table ,save_book , del_book);
+        center_book.getChildren().addAll(book_man_label, book_Search_bar, book_table, save_book, del_book);
 
         //[Component] - Check-IN Management  [Label]
         Label check_in_label = new Label("Booking Management");
@@ -746,7 +863,7 @@ public class Manager extends Application {
         fileOut.close();
     }
 
-        private void updateBook(TableView<Booking> table, String dbname) throws FileNotFoundException, IOException, InvalidFormatException {
+    private void updateBook(TableView<Booking> table, String dbname) throws FileNotFoundException, IOException, InvalidFormatException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet(dbname);
 
@@ -763,10 +880,10 @@ public class Manager extends Application {
                 Object celValue = table.getColumns().get(col).getCellObservableValue(row).getValue();
                 try {
                     if (celValue != null && Double.parseDouble(celValue.toString()) != 0.0) {
-                        hssfRow.createCell(col).setCellValue(Double.parseDouble(celValue.toString()));
+                        hssfRow.createCell(col).setCellValue(String.valueOf(Double.parseDouble(celValue.toString())));
                     }
                 } catch (NumberFormatException e) {
-                    hssfRow.createCell(col).setCellValue(celValue.toString());
+                    hssfRow.createCell(col).setCellValue(String.valueOf(celValue.toString()));
                 }
             }
         }
@@ -776,5 +893,5 @@ public class Manager extends Application {
         workbook.write(fileOut);
         fileOut.close();
     }
-    
+
 }

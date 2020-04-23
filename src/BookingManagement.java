@@ -75,7 +75,7 @@ public class BookingManagement {
         row.createCell(4).setCellValue(book.getRoomType());
         row.createCell(5).setCellValue(book.getRoomClass());
         row.createCell(6).setCellValue(book.getBuilding());
-        row.createCell(7).setCellValue(book.getFloor());
+        row.createCell(7).setCellValue(String.valueOf(book.getFloor()));
         row.createCell(8).setCellValue(book.getAdult());
         row.createCell(9).setCellValue(book.getYoung());
         row.createCell(10).setCellValue(book.getBreakfast());
@@ -128,7 +128,11 @@ public class BookingManagement {
                 Cell cell = sheet.getRow(i).getCell(j);
 
                 if (j == 0) {
-                    temp.setID(cell.getStringCellValue());
+                    if (cell.getCellType().equals(cell.getCellType().NUMERIC)) {
+                        temp.setID(String.valueOf((int) cell.getNumericCellValue()));
+                    } else if (cell.getCellType().equals(cell.getCellType().STRING)) {
+                        temp.setID(cell.getStringCellValue());
+                    }
                 }
                 if (j == 1) {
                     temp.setCustomerName(String.valueOf(cell.getStringCellValue()));
@@ -149,13 +153,28 @@ public class BookingManagement {
                     temp.setBuilding(cell.getStringCellValue());
                 }
                 if (j == 7) {
-                    temp.setFloor(cell.getStringCellValue());
+                    if (cell.getCellType().equals(cell.getCellType().NUMERIC)) {
+                        temp.setFloor(String.valueOf((int) cell.getNumericCellValue()));
+                    } else if (cell.getCellType().equals(cell.getCellType().STRING)) {
+                        temp.setFloor(cell.getStringCellValue());
+                    }
                 }
                 if (j == 8) {
-                    temp.setAdult(cell.getStringCellValue());
+                    if (cell.getCellType().equals(cell.getCellType().NUMERIC)) {
+                        temp.setAdult(String.valueOf((int) cell.getNumericCellValue()));
+                    } else if (cell.getCellType().equals(cell.getCellType().STRING)) {
+                        temp.setAdult(cell.getStringCellValue());
+                    }
                 }
                 if (j == 9) {
-                    temp.setYoung(cell.getStringCellValue());
+                    if (cell.getCellType().equals(cell.getCellType().NUMERIC)) {
+                        temp.setYoung(String.valueOf((int) cell.getNumericCellValue()));
+                    } else if (cell.getCellType().equals(cell.getCellType().STRING)) {
+                        temp.setYoung(cell.getStringCellValue());
+                    } else if (cell.getCellType().equals(cell.getCellType().BLANK)) {
+                    } else {
+                        temp.setYoung("0");
+                    }
                 }
                 if (j == 10) {
                     temp.setBreakfast(cell.getStringCellValue());
@@ -164,7 +183,11 @@ public class BookingManagement {
                     temp.setDinner(cell.getStringCellValue());
                 }
                 if (j == 12) {
-                    temp.setTotalPrice(cell.getNumericCellValue());
+                    if (cell.getCellType().equals(cell.getCellType().NUMERIC)) {
+                        temp.setTotalPrice(cell.getNumericCellValue());
+                    } else if (cell.getCellType().equals(cell.getCellType().STRING)) {
+                        temp.setTotalPrice(Double.valueOf(cell.getStringCellValue()));
+                    }
                 }
                 if (j == 13) {
                     temp.setStatus(cell.getStringCellValue());
@@ -179,8 +202,8 @@ public class BookingManagement {
                     temp_booking_list.add(temp);
                 }
             }
-            if(name == "ALL"){
-                 temp_booking_list.add(temp);
+            if (name == "ALL") {
+                temp_booking_list.add(temp);
             }
         }
 
