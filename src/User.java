@@ -851,7 +851,7 @@ public class User extends Application {
                         adult_num.getValue().toString(), young_num.getValue().toString(),
                         String.valueOf(breakfast.isSelected()), String.valueOf(dinner.isSelected()), this.summery_price, "Booked");
                 try {
-                    bookmg.addBooking(roomCheckList.get(p).getRoomID(), booking);
+                    bookmg.addBooking(roomCheckList.get(p).getRoomID(), roomCheckList.get(p).getRoomNumber() , booking);
                 } catch (IOException ex) {
                     Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
                 }

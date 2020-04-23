@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -15,6 +16,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -59,15 +61,18 @@ public class Manager extends Application {
 
     private iHotel main_page;
     private BookingManagement book_mg = new BookingManagement();
+    private RoomManagement room_ma;
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    public Manager() {
+    public Manager() throws IOException {
+        this.room_ma = new RoomManagement();
     }
 
-    public Manager(String username, String password) {
+    public Manager(String username, String password) throws IOException {
+        this.room_ma = new RoomManagement();
         this.username = username;
         this.password = password;
     }
@@ -131,27 +136,6 @@ public class Manager extends Application {
         Search_bar.setMargin(search_bt, new Insets(10, 10, 10, 10));
         Search_bar.setAlignment(Pos.BASELINE_RIGHT);
         Search_bar.getChildren().addAll(search_box, search_bt);
-
-//        //[Component] - Room Management - add Room bar [Hbox]
-        TextField ID = new TextField();
-        TextField Room_Number = new TextField();
-        TextField Room_Type = new TextField();
-        TextField Room_Class = new TextField();
-        TextField Building = new TextField();
-        TextField Floor = new TextField();
-        TextField NumOfBed = new TextField();
-        NumOfBed.setText("1");
-        TextField Base_price = new TextField();
-        TextField Status = new TextField();
-      
-
-        Button add_room = new Button("เพิ่ม");
-        add_room.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 22));
-
-        HBox add_room_bar = new HBox(2);
-        add_room_bar.setAlignment(Pos.BASELINE_RIGHT);
-        add_room_bar.getChildren().addAll(ID, Room_Number, Room_Type, Room_Class,
-                Building, Floor,Base_price, Status);
 
         //[Component] - Room Management Table [Table]
         TableView<Room> room_table = new TableView();
@@ -312,7 +296,9 @@ public class Manager extends Application {
         room_table.getColumns().add(room_tb_col9);
 
         //[Component] - Room Management - Save [Button]
-        Button save_room = new Button("Save");
+        Button save_room = new Button("บันทึก");
+        save_room.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 18));
+        //save_room.setStyle("-fx-background-color: #1EB2A6;");
         save_room.setOnMouseClicked(eh -> {
             try {
                 this.updateRoom(room_table, "RoomStock");
@@ -334,12 +320,99 @@ public class Manager extends Application {
         });
 
         //[Component] - Room Management - Delete [Button]
-        Button del_room = new Button("Delete");
+        Button del_room = new Button("ลบ");
+        del_room.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 18));
         del_room.setOnAction(eh -> {
             Room selectedItem = room_table.getSelectionModel().getSelectedItem();
             room_table.getItems().remove(selectedItem);
 
         });
+
+        //[Component] - Room Management - add Room bar [Hbox]
+        TextField Room_Number = new TextField();
+        Room_Number.setStyle("-fx-max-width: 80; ");
+
+        ChoiceBox<String> Room_Type = new ChoiceBox<>();
+        Room_Type.setStyle("-fx-max-width: 80;");
+        Room_Type.getItems().addAll("Superior", "Delux", "Junior Suite", "Royal Suite");
+        Room_Type.setValue("Superior");
+
+        ChoiceBox<String> Room_Class = new ChoiceBox<>();
+        Room_Class.setStyle("-fx-max-width: 80;");
+        Room_Class.getItems().addAll("Normal", "Premium");
+        Room_Class.setValue("Normal");
+
+        ChoiceBox<String> Building = new ChoiceBox<>();
+        Building.setStyle("-fx-max-width: 100;");
+        Building.getItems().addAll("A");
+        Building.setValue("A");
+
+        ChoiceBox<String> Floor = new ChoiceBox<>();
+        Floor.setStyle("-fx-max-width: 100;");
+        Floor.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "8", "9");
+        Floor.setValue("1");
+
+        TextField Base_price = new TextField();
+        Base_price.setStyle("-fx-max-width: 80; ");
+
+        ChoiceBox<String> Status = new ChoiceBox<>();
+        Status.setStyle("-fx-max-width: 100;");
+        Status.getItems().addAll("Occupied", "Unoccupied");
+        Status.setValue("Unoccupied");
+
+        Button add_room = new Button("เพิ่ม");
+        add_room.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 18));
+        add_room.setOnAction(eh -> {
+
+            Room new_room = new Room(Room_Number.getText(), Room_Type.getValue(), Room_Class.getValue(), Building.getValue(), Floor.getValue(), 1, Double.valueOf(Base_price.getText()));
+
+            room_table.getItems().add(new_room);
+            room_table.getItems().clear();
+            try {
+                for (int t = 0; t < this.fetchRoom().size(); t++) {
+                    room_table.getItems().add(this.fetchRoom().get(t));
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            room_table.scrollTo((room_table.getItems().size() - 1));
+
+            try {
+                room_ma.addRoom(new_room);
+            } catch (IOException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            new_room = null;
+            Room_Number.setText(" ");
+            Base_price.setText(" ");
+            room_table.getItems().clear();
+
+            try {
+                for (int t = 0; t < this.fetchRoom().size(); t++) {
+                    room_table.getItems().add(this.fetchRoom().get(t));
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            room_table.scrollTo((room_table.getItems().size() - 1));
+        });
+
+        HBox add_room_bar = new HBox(11);
+
+        add_room_bar.setMargin(Room_Number, new Insets(0, 0, 0, 90));
+        add_room_bar.setMargin(Room_Type, new Insets(0, 0, 0, 10));
+        add_room_bar.setMargin(Room_Class, new Insets(0, 0, 0, 10));
+        add_room_bar.setMargin(Building, new Insets(0, 0, 0, 30));
+        add_room_bar.setMargin(Floor, new Insets(0, 0, 0, 30));
+        add_room_bar.setMargin(Base_price, new Insets(0, 0, 0, 30));
+        add_room_bar.setMargin(Status, new Insets(0, 0, 0, 10));
+        add_room_bar.setMargin(add_room, new Insets(0, 0, 0, 300));
+
+        add_room_bar.setAlignment(Pos.BASELINE_LEFT);
+        add_room_bar.getChildren().addAll(Room_Number, Room_Type, Room_Class,
+                Building, Floor, Base_price, Status, add_room, del_room, save_room);
 
         //[Component] - Room Management [All Center Area]
         VBox center_room = new VBox();
@@ -347,10 +420,9 @@ public class Manager extends Application {
 
         center_room.setMargin(room_man_label, new Insets(10, 10, 10, 10));
         center_room.setMargin(room_table, new Insets(10, 10, 10, 10));
-        center_room.setMargin(save_room, new Insets(10, 10, 10, 10));
-        center_room.setMargin(del_room, new Insets(10, 10, 10, 10));
+        center_room.setMargin(add_room_bar, new Insets(0, 10, 10, 10));
 
-        center_room.getChildren().addAll(room_man_label, Search_bar, room_table, save_room, del_room);
+        center_room.getChildren().addAll(room_man_label, Search_bar, room_table, add_room_bar);
 
         //[Component] - Booking Management  [Label]
         Label book_man_label = new Label("Booking Management");
@@ -379,9 +451,8 @@ public class Manager extends Application {
             book_table.getItems().add(this.fetchBooking().get(t));
         }
 
-        TableColumn book_tb_col1 = new TableColumn<>("Booking ID");
-        book_tb_col1.setCellValueFactory(new PropertyValueFactory<>("ID"));
-        book_tb_col1.setCellFactory(TextFieldTableCell.forTableColumn());
+        TableColumn book_tb_col1 = new TableColumn<Booking, String>("Booking ID");
+        book_tb_col1.setCellValueFactory(new PropertyValueFactory<Booking, String>("ID"));
         book_tb_col1.setEditable(false);
         book_tb_col1.setMinWidth(50);
         book_tb_col1.setReorderable(false);
@@ -459,7 +530,7 @@ public class Manager extends Application {
         book_tb_col6.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Booking, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Booking, String> t) {
-                t.getTableView().getItems().get(t.getTablePosition().getRow()).setRoomType(t.getNewValue());
+                t.getTableView().getItems().get(t.getTablePosition().getRow()).setRoomClass(t.getNewValue());
             }
         });
 
@@ -664,23 +735,44 @@ public class Manager extends Application {
         TextField checkin_search_box = new TextField();
         checkin_search_box.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 18));
         checkin_search_box.setStyle("-fx-min-width: 400; ");
+        checkin_search_box.setPromptText("Enter your Booking ID");
 
-        Button checkin_search_bt = new Button("ค้นหา");
+        Button checkin_search_bt = new Button("CHECK IN");
         checkin_search_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 18));
+        checkin_search_bt.setOnAction(eh->{
+            try {
+                System.out.println("Room Number" + this.CheckIN(checkin_search_box.getText()) );
+            } catch (IOException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
+        });
 
         HBox checkin_Search_bar = new HBox(2);
         checkin_Search_bar.setMargin(checkin_search_box, new Insets(10, 10, 10, 10));
         checkin_Search_bar.setMargin(checkin_search_bt, new Insets(10, 10, 10, 10));
-        checkin_Search_bar.setAlignment(Pos.BASELINE_RIGHT);
+        checkin_Search_bar.setAlignment(Pos.BASELINE_LEFT);
         checkin_Search_bar.getChildren().addAll(checkin_search_box, checkin_search_bt);
 
         //[Component] - Room Management Table [Table]
-        TableView checkin_table = new TableView();
+        TableView<CheckManagement> checkin_table = new TableView();
 
-        TableColumn checkin_tb_col1 = new TableColumn<>("รายการ");
-        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        TableColumn checkin_tb_col1 = new TableColumn<>("Booking ID");
+        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<>("BookedID"));
+
+        TableColumn checkin_tb_col2 = new TableColumn<>("Customer Name");
+        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<>("CustomerName"));
+
+        TableColumn checkin_tb_col3 = new TableColumn<>("Room Number");
+        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<>("CustomerRoom"));
+
+        TableColumn checkin_tb_col4 = new TableColumn<>("Data Created");
+        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<>("dateCreated"));
 
         checkin_table.getColumns().add(checkin_tb_col1);
+        checkin_table.getColumns().add(checkin_tb_col2);
+        checkin_table.getColumns().add(checkin_tb_col3);
+        checkin_table.getColumns().add(checkin_tb_col4);
 
         //[Component] - Booking Management [All Center Area]
         VBox center_checkin = new VBox();
@@ -880,7 +972,9 @@ public class Manager extends Application {
                 Object celValue = table.getColumns().get(col).getCellObservableValue(row).getValue();
                 try {
                     if (celValue != null && Double.parseDouble(celValue.toString()) != 0.0) {
-                        hssfRow.createCell(col).setCellValue(String.valueOf(Double.parseDouble(celValue.toString())));
+                        hssfRow.createCell(col).setCellValue(String.valueOf(celValue.toString()));
+                    } else {
+                        hssfRow.createCell(col).setCellValue("0");
                     }
                 } catch (NumberFormatException e) {
                     hssfRow.createCell(col).setCellValue(String.valueOf(celValue.toString()));
@@ -894,4 +988,11 @@ public class Manager extends Application {
         fileOut.close();
     }
 
+    private String CheckIN(String bookingID) throws IOException{
+        String dbname = "Check_IN_OUT";
+        Database db = new Database();
+        int row = db.getRowNum(bookingID, dbname);
+        return db.readCell(row , 2, dbname);
+    }
+    
 }

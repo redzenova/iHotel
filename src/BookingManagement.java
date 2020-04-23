@@ -37,9 +37,11 @@ public class BookingManagement {
     public BookingManagement() {
     }
 
-    public void addBooking(String roomId, Booking book) throws FileNotFoundException, IOException {
+    public void addBooking(String roomId, String roomNumber, Booking book) throws FileNotFoundException, IOException {
 
         int numRow = 0;
+
+        CheckManagement check = new CheckManagement();
 
         System.out.println("Room Id " + roomId);
         room_man = new RoomManagement();
@@ -67,8 +69,11 @@ public class BookingManagement {
 
         int rand = getRand(1000, 2000);
         row.createCell(0).setCellValue(String.valueOf(rand));
-        book.setID(roomId);
+        book.setID(String.valueOf(rand));
 
+        //Add value for Check-IN
+        check.addCheckIn(String.valueOf(rand), roomNumber, book.getCustomerName());
+        
         row.createCell(1).setCellValue(book.getCustomerName());
         row.createCell(2).setCellValue(book.getCheckInDate());
         row.createCell(3).setCellValue(book.getCheckOutDate());

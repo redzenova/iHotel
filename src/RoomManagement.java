@@ -117,15 +117,18 @@ public class RoomManagement {
 
                 if (j == 0) {
 
-                    if(cell.getCellType().equals(cell.getCellType().NUMERIC)){
+                    if (cell.getCellType().equals(cell.getCellType().NUMERIC)) {
                         temp_room.setRoomID(String.valueOf((int) cell.getNumericCellValue()));
-                    }
-                    else if(cell.getCellType().equals(cell.getCellType().STRING)){
+                    } else if (cell.getCellType().equals(cell.getCellType().STRING)) {
                         temp_room.setRoomID(cell.getStringCellValue());
                     }
                 }
                 if (j == 1) {
-                    temp_room.setRoomNumber(String.valueOf((int) cell.getNumericCellValue()));
+                    if (cell.getCellType().equals(cell.getCellType().NUMERIC)) {
+                        temp_room.setRoomNumber(String.valueOf((int) cell.getNumericCellValue()));
+                    } else if (cell.getCellType().equals(cell.getCellType().STRING)) {
+                        temp_room.setRoomNumber(cell.getStringCellValue());
+                    }
                 }
                 if (j == 2) {
                     temp_room.setRoomType(cell.getStringCellValue());
@@ -137,7 +140,11 @@ public class RoomManagement {
                     temp_room.setBuilding(cell.getStringCellValue());
                 }
                 if (j == 5) {
-                    temp_room.setFloor(String.valueOf((int) cell.getNumericCellValue()));
+                    if (cell.getCellType().equals(cell.getCellType().NUMERIC)) {
+                        temp_room.setFloor(String.valueOf((int) cell.getNumericCellValue()));
+                    } else if (cell.getCellType().equals(cell.getCellType().STRING)) {
+                        temp_room.setFloor(cell.getStringCellValue());
+                    }
                 }
                 if (j == 6) {
                     temp_room.setNumBed((int) cell.getNumericCellValue());
