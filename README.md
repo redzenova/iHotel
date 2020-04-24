@@ -5,11 +5,15 @@
 
 [![Register-Page.png](https://i.postimg.cc/JhXgc6nf/Register-Page.png)](https://postimg.cc/rd8Qq95j)
 
-[url=https://postimg.cc/jL1qpwLx][img]https://i.postimg.cc/jL1qpwLx/Manager-Page-1.png[/img][/url] [url=https://postimg.cc/7J6Dcw4J][img]https://i.postimg.cc/7J6Dcw4J/Manager-Page-2.png[/img][/url] [url=https://postimg.cc/rdkTTSck][img]https://i.postimg.cc/rdkTTSck/Manager-Page-3.png[/img][/url]
+[![User-Page-1.png](https://i.postimg.cc/Gmgp8NzW/User-Page-1.png)](https://postimg.cc/nX7xN3y2)
+[![User-Page-2.png](https://i.postimg.cc/MGhKtQCt/User-Page-2.png)](https://postimg.cc/7CnkZfYT)
+[![User-Page-3.png](https://i.postimg.cc/pVBR54Ls/User-Page-3.png)](https://postimg.cc/t77LLrP6)
+[![User-Page-4.png](https://i.postimg.cc/jS2xbcKZ/User-Page-4.png)](https://postimg.cc/75v81g52)
+[![User-Page-5.png](https://i.postimg.cc/dt4sppMh/User-Page-5.png)](https://postimg.cc/3d0QDLxh)
 
-[url=https://postimg.cc/nX7xN3y2][img]https://i.postimg.cc/nX7xN3y2/User-Page-1.png[/img][/url] [url=https://postimg.cc/7CnkZfYT][img]https://i.postimg.cc/7CnkZfYT/User-Page-2.png[/img][/url] [url=https://postimg.cc/t77LLrP6][img]https://i.postimg.cc/t77LLrP6/User-Page-3.png[/img][/url]
-
-[url=https://postimg.cc/75v81g52][img]https://i.postimg.cc/75v81g52/User-Page-4.png[/img][/url] [url=https://postimg.cc/3d0QDLxh][img]https://i.postimg.cc/3d0QDLxh/User-Page-5.png[/img][/url] 
+[![Manager-Page-1.png](https://i.postimg.cc/DwvWb1hX/Manager-Page-1.png)](https://postimg.cc/jL1qpwLx)
+[![Manager-Page-2.png](https://i.postimg.cc/wM5v1jb2/Manager-Page-2.png)](https://postimg.cc/7J6Dcw4J)
+[![Manager-Page-3.png](https://i.postimg.cc/3wyxgBcd/Manager-Page-3.png)](https://postimg.cc/rdkTTSck)
 
 ### Features
 - ระบบบริหารจัดการโรงแรม
