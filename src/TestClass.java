@@ -13,7 +13,11 @@ import java.io.IOException;
 public class TestClass {
 
     public static void main2(String[] args) throws IOException {
-            RoomManagement rm = new RoomManagement();
-            rm.makeOccupied("2025");
+               Database db = new Database();
+               db.toTextFile("Administrator");
+                db.toTextFile("BookingStock");
+                 db.toTextFile("Check_IN_OUT");
+                  db.toTextFile("Manager");
+                   db.toTextFile("RoomStock");
     }
 }

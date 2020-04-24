@@ -1,0 +1,5 @@
+Booking ID, Customer name, Room Number,  Status, Data Created, 
+1715, Raweeroj   Thongdee, 1001, Waiting, 24-04-2020 12:14:04, 
+1041, Raweeroj   Thongdee, 1002, Waiting, 24-04-2020 12:48:27, 
+1719, Raweeroj   Thongdee, 2003, Waiting, 24-04-2020 12:48:27, 
+

@@ -75,7 +75,7 @@ public class User extends Application {
     private Authentication auth = new Authentication();
     private Database db = new Database();
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         launch(args);
     }
 

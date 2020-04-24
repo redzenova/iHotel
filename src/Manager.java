@@ -65,8 +65,9 @@ public class Manager extends Application {
     private iHotel main_page;
     private BookingManagement book_mg = new BookingManagement();
     private RoomManagement room_ma;
+    private TableView<Check> checkin_table = new TableView();
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         launch(args);
     }
 
@@ -761,7 +762,16 @@ public class Manager extends Application {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-
+                checkin_table.getItems().clear();
+                try {
+                    for (int t = 0; t < this.fetchCheck().size(); t++) {
+                        checkin_table.getItems().add(this.fetchCheck().get(t));
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                checkin_search_box.setText(" ");
+                checkin_search_box.setPromptText("Enter your Booking ID");
             } else {
                 alert.close();
             }
@@ -787,7 +797,7 @@ public class Manager extends Application {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Check-OUT");
             try {
-                alert.setContentText("ขอขอบคุณที่ใช้บริการ ครับ คุณ  " + this.CheckOUT(checkout_search_bt.getText()));
+                alert.setContentText("ขอขอบคุณที่ใช้บริการ ครับ คุณ  " + this.CheckOUT(checkout_search_box.getText()));
             } catch (IOException ex) {
                 Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -801,13 +811,22 @@ public class Manager extends Application {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-
+                checkin_table.getItems().clear();
+                try {
+                    for (int t = 0; t < this.fetchCheck().size(); t++) {
+                        checkin_table.getItems().add(this.fetchCheck().get(t));
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                checkout_search_box.setText(" ");
+                 checkout_search_box.setPromptText("Enter your Room Number");
             } else {
                 alert.close();
             }
 
             try {
-                System.out.println("Customer Name : " + this.CheckOUT(checkout_search_bt.getText()));
+                System.out.println("Customer Name : " + this.CheckOUT(checkout_search_box.getText()));
             } catch (IOException ex) {
                 Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -817,7 +836,7 @@ public class Manager extends Application {
         HBox checkin_Search_bar = new HBox(2);
         checkin_Search_bar.setMargin(checkin_search_box, new Insets(10, 10, 10, 10));
         checkin_Search_bar.setMargin(checkin_search_bt, new Insets(10, 10, 10, 10));
-        checkin_Search_bar.setMargin(checkout_search_box, new Insets(10, 10, 10, 80));
+        checkin_Search_bar.setMargin(checkout_search_box, new Insets(10, 10, 10, 50));
         checkin_Search_bar.setAlignment(Pos.BASELINE_LEFT);
         checkin_Search_bar.getChildren().addAll(checkin_search_box, checkin_search_bt, checkout_search_box, checkout_search_bt);
 
@@ -827,7 +846,7 @@ public class Manager extends Application {
         //checkout_Search_bar.getChildren().addAll(, );
 
         //[Component] - Room Management Table [Table]
-        TableView<Check> checkin_table = new TableView();
+        checkin_table = new TableView();
 
         for (int t = 0; t < this.fetchCheck().size(); t++) {
             checkin_table.getItems().add(this.fetchCheck().get(t));
@@ -835,18 +854,38 @@ public class Manager extends Application {
 
         TableColumn checkin_tb_col1 = new TableColumn<Check, String>("Booking ID");
         checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<Check, String>("BookedID"));
+        checkin_tb_col1.setMinWidth(100);
+        checkin_tb_col1.setReorderable(false);
+        checkin_tb_col1.setResizable(false);
+        checkin_tb_col1.setStyle("-fx-alignment: CENTER;");
 
         TableColumn checkin_tb_col2 = new TableColumn<Check, String>("Customer Name");
-        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<Check, String>("CustomerName"));
+        checkin_tb_col2.setCellValueFactory(new PropertyValueFactory<Check, String>("CustomerName"));
+        checkin_tb_col2.setMinWidth(150);
+        checkin_tb_col2.setReorderable(false);
+        checkin_tb_col2.setResizable(false);
+        checkin_tb_col2.setStyle("-fx-alignment: CENTER;");
 
         TableColumn checkin_tb_col3 = new TableColumn<Check, String>("Room Number");
-        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<Check, String>("CustomerRoom"));
+        checkin_tb_col3.setCellValueFactory(new PropertyValueFactory<Check, String>("CustomerRoom"));
+        checkin_tb_col3.setMinWidth(100);
+        checkin_tb_col3.setReorderable(false);
+        checkin_tb_col3.setResizable(false);
+        checkin_tb_col3.setStyle("-fx-alignment: CENTER;");
 
         TableColumn checkin_tb_col5 = new TableColumn<Check, String>("Status");
-        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<Check, String>("Status"));
+        checkin_tb_col5.setCellValueFactory(new PropertyValueFactory<Check, String>("Status"));
+        checkin_tb_col5.setMinWidth(100);
+        checkin_tb_col5.setReorderable(false);
+        checkin_tb_col5.setResizable(false);
+        checkin_tb_col5.setStyle("-fx-alignment: CENTER;");
 
         TableColumn checkin_tb_col4 = new TableColumn<Check, String>("Data Created");
-        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<Check, String>("dateCreated"));
+        checkin_tb_col4.setCellValueFactory(new PropertyValueFactory<Check, String>("dateCreated"));
+        checkin_tb_col4.setMinWidth(150);
+        checkin_tb_col4.setReorderable(false);
+        checkin_tb_col4.setResizable(false);
+        checkin_tb_col4.setStyle("-fx-alignment: CENTER;");
 
         checkin_table.getColumns().add(checkin_tb_col1);
         checkin_table.getColumns().add(checkin_tb_col2);
@@ -857,6 +896,7 @@ public class Manager extends Application {
         //[Component] - Booking Management [All Center Area]
         Button refesh = new Button("รีเฟรส");
         refesh.setOnAction(eh -> {
+            checkin_table.getItems().clear();
             try {
                 for (int t = 0; t < this.fetchCheck().size(); t++) {
                     checkin_table.getItems().add(this.fetchCheck().get(t));
@@ -1096,8 +1136,9 @@ public class Manager extends Application {
     private String CheckOUT(String RoomNum) throws IOException {
         String dbname = "Check_IN_OUT";
         Database db = new Database();
-        int row = db.getRowNum(RoomNum, dbname) + 1;
+        int row = db.getRowNum(RoomNum, dbname);
         db.writeCell("CHECK-OUT", row, 3, dbname);
+        
         return db.readCell(row, 1, dbname);
     }
 

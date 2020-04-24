@@ -359,12 +359,11 @@ public class Database {
         XSSFWorkbook workbook = new XSSFWorkbook(fis);
         XSSFSheet sheet = workbook.getSheetAt(0);
 
-        Row row = sheet.createRow(rowNum);
-        Cell cell = row.createCell(collumNum);
+        Cell cell = sheet.getRow(rowNum).getCell(collumNum);
         cell.setCellValue(string);
 
         
-         FileOutputStream fileOut = new FileOutputStream("src/db/User.xlsx");
+         FileOutputStream fileOut = new FileOutputStream("src/db/"+ filename+".xlsx");
         workbook.write(fileOut);
         fileOut.close();
         fis.close();
