@@ -363,8 +363,12 @@ public class Database {
         Cell cell = row.createCell(collumNum);
         cell.setCellValue(string);
 
-        workbook.close();
+        
+         FileOutputStream fileOut = new FileOutputStream("src/db/User.xlsx");
+        workbook.write(fileOut);
+        fileOut.close();
         fis.close();
+      
     }
 
     public String readCell(int rowNum, int collumNum, String filename) throws FileNotFoundException, IOException {

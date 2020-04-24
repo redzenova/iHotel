@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -15,7 +16,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -408,7 +411,7 @@ public class Manager extends Application {
         add_room_bar.setMargin(Floor, new Insets(0, 0, 0, 30));
         add_room_bar.setMargin(Base_price, new Insets(0, 0, 0, 30));
         add_room_bar.setMargin(Status, new Insets(0, 0, 0, 10));
-        add_room_bar.setMargin(add_room, new Insets(0, 0, 0, 300));
+        add_room_bar.setMargin(add_room, new Insets(0, 0, 0, 250));
 
         add_room_bar.setAlignment(Pos.BASELINE_LEFT);
         add_room_bar.getChildren().addAll(Room_Number, Room_Type, Room_Class,
@@ -739,49 +742,138 @@ public class Manager extends Application {
 
         Button checkin_search_bt = new Button("CHECK IN");
         checkin_search_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 18));
-        checkin_search_bt.setOnAction(eh->{
+        checkin_search_bt.setOnAction(eh -> {
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Check-IN");
             try {
-                System.out.println("Room Number" + this.CheckIN(checkin_search_box.getText()) );
+                alert.setContentText("ห้อของคุณคือ  " + this.CheckIN(checkin_search_box.getText()));
             } catch (IOException ex) {
                 Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
             }
-           
+
+            Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
+            try {
+                stage2.getIcons().add(new Image(new FileInputStream(new File("src/img/icon.png"))));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+
+            } else {
+                alert.close();
+            }
+
+            try {
+                System.out.println("Room Number :" + this.CheckIN(checkin_search_box.getText()));
+            } catch (IOException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        });
+
+        //[Component] - Room Management - Search bar [Hbox]
+        TextField checkout_search_box = new TextField();
+        checkout_search_box.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 18));
+        checkout_search_box.setStyle("-fx-min-width: 400; ");
+        checkout_search_box.setPromptText("Enter your Room Number");
+
+        Button checkout_search_bt = new Button("CHECK OUT");
+        checkout_search_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 18));
+        checkout_search_bt.setOnAction(eh -> {
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Check-OUT");
+            try {
+                alert.setContentText("ขอขอบคุณที่ใช้บริการ ครับ คุณ  " + this.CheckOUT(checkout_search_bt.getText()));
+            } catch (IOException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
+            try {
+                stage2.getIcons().add(new Image(new FileInputStream(new File("src/img/icon.png"))));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+
+            } else {
+                alert.close();
+            }
+
+            try {
+                System.out.println("Customer Name : " + this.CheckOUT(checkout_search_bt.getText()));
+            } catch (IOException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         });
 
         HBox checkin_Search_bar = new HBox(2);
         checkin_Search_bar.setMargin(checkin_search_box, new Insets(10, 10, 10, 10));
         checkin_Search_bar.setMargin(checkin_search_bt, new Insets(10, 10, 10, 10));
+        checkin_Search_bar.setMargin(checkout_search_box, new Insets(10, 10, 10, 80));
         checkin_Search_bar.setAlignment(Pos.BASELINE_LEFT);
-        checkin_Search_bar.getChildren().addAll(checkin_search_box, checkin_search_bt);
+        checkin_Search_bar.getChildren().addAll(checkin_search_box, checkin_search_bt, checkout_search_box, checkout_search_bt);
+
+        HBox checkout_Search_bar = new HBox(2);
+        checkout_Search_bar.setMargin(checkout_search_bt, new Insets(10, 10, 10, 10));
+        checkout_Search_bar.setAlignment(Pos.BASELINE_LEFT);
+        //checkout_Search_bar.getChildren().addAll(, );
 
         //[Component] - Room Management Table [Table]
-        TableView<CheckManagement> checkin_table = new TableView();
+        TableView<Check> checkin_table = new TableView();
 
-        TableColumn checkin_tb_col1 = new TableColumn<>("Booking ID");
-        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<>("BookedID"));
+        for (int t = 0; t < this.fetchCheck().size(); t++) {
+            checkin_table.getItems().add(this.fetchCheck().get(t));
+        }
 
-        TableColumn checkin_tb_col2 = new TableColumn<>("Customer Name");
-        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<>("CustomerName"));
+        TableColumn checkin_tb_col1 = new TableColumn<Check, String>("Booking ID");
+        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<Check, String>("BookedID"));
 
-        TableColumn checkin_tb_col3 = new TableColumn<>("Room Number");
-        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<>("CustomerRoom"));
+        TableColumn checkin_tb_col2 = new TableColumn<Check, String>("Customer Name");
+        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<Check, String>("CustomerName"));
 
-        TableColumn checkin_tb_col4 = new TableColumn<>("Data Created");
-        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<>("dateCreated"));
+        TableColumn checkin_tb_col3 = new TableColumn<Check, String>("Room Number");
+        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<Check, String>("CustomerRoom"));
+
+        TableColumn checkin_tb_col5 = new TableColumn<Check, String>("Status");
+        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<Check, String>("Status"));
+
+        TableColumn checkin_tb_col4 = new TableColumn<Check, String>("Data Created");
+        checkin_tb_col1.setCellValueFactory(new PropertyValueFactory<Check, String>("dateCreated"));
 
         checkin_table.getColumns().add(checkin_tb_col1);
         checkin_table.getColumns().add(checkin_tb_col2);
         checkin_table.getColumns().add(checkin_tb_col3);
+        checkin_table.getColumns().add(checkin_tb_col5);
         checkin_table.getColumns().add(checkin_tb_col4);
 
         //[Component] - Booking Management [All Center Area]
+        Button refesh = new Button("รีเฟรส");
+        refesh.setOnAction(eh -> {
+            try {
+                for (int t = 0; t < this.fetchCheck().size(); t++) {
+                    checkin_table.getItems().add(this.fetchCheck().get(t));
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+
         VBox center_checkin = new VBox();
         center_checkin.setVisible(false);
 
         center_checkin.setMargin(check_in_label, new Insets(10, 10, 10, 10));
         center_checkin.setMargin(checkin_table, new Insets(10, 10, 10, 10));
+        center_checkin.setMargin(refesh, new Insets(10, 10, 10, 10));
 
-        center_checkin.getChildren().addAll(check_in_label, checkin_Search_bar, checkin_table);
+        center_checkin.getChildren().addAll(check_in_label, checkin_Search_bar, checkin_table, refesh);
 
         //========================= [Menu] Room Management [Button] ========================
         Button room_man_bt = new Button("จัดการห้องพัก");
@@ -855,7 +947,7 @@ public class Manager extends Application {
         //=======================================================================
 
         //============================ [Menu] Check-In [Button] ==========================          
-        Button check_in_bt = new Button("CHECK-IN");
+        Button check_in_bt = new Button("CHECK-IN-OUT");
         check_in_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 26));
         check_in_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFA34D; -fx-text-fill: #000000 ");
         //On mouse idle
@@ -924,6 +1016,11 @@ public class Manager extends Application {
         return FXCollections.observableArrayList(book_mg.searchBooking("ALL"));
     }
 
+    private ObservableList<Check> fetchCheck() throws IOException {
+        CheckManagement ch_mg = new CheckManagement();
+        return FXCollections.observableArrayList(ch_mg.searchCheck());
+    }
+
     private void updateRoom(TableView<Room> table, String dbname) throws FileNotFoundException, IOException, InvalidFormatException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet(dbname);
@@ -988,11 +1085,20 @@ public class Manager extends Application {
         fileOut.close();
     }
 
-    private String CheckIN(String bookingID) throws IOException{
+    private String CheckIN(String bookingID) throws IOException {
         String dbname = "Check_IN_OUT";
         Database db = new Database();
         int row = db.getRowNum(bookingID, dbname);
-        return db.readCell(row , 2, dbname);
+        db.writeCell("CHECK-IN", row, 3, dbname);
+        return db.readCell(row, 2, dbname);
     }
-    
+
+    private String CheckOUT(String RoomNum) throws IOException {
+        String dbname = "Check_IN_OUT";
+        Database db = new Database();
+        int row = db.getRowNum(RoomNum, dbname) + 1;
+        db.writeCell("CHECK-OUT", row, 3, dbname);
+        return db.readCell(row, 1, dbname);
+    }
+
 }

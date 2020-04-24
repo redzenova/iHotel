@@ -65,6 +65,7 @@ public class User extends Application {
     private int NumberOfDay = 0;
 
     private Stage window;
+    private Button back_bt ;
 
     //Custom Class
     private iHotel main_page;
@@ -103,7 +104,7 @@ public class User extends Application {
 
         Label welcome_label;
 
-        welcome_label = new Label("ยินดีต้อนรับ คุณ   ");
+        welcome_label = new Label("ยินดีต้อนรับ คุณ  " + acc_temp.getFirstName());
 
         welcome_label.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 28));
         welcome_label.setStyle("-fx-text-fill: #ffffff");
@@ -833,29 +834,47 @@ public class User extends Application {
             Booking_bt.setStyle("-fx-background-radius: 2; -fx-background-color: #FFC997; -fx-text-fill: #ffffff");
 
             ArrayList<Room> roomCheckList = new ArrayList();
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("ยืนยันการจอง");
+            alert.setContentText("โปรดตรวจสอบข้อมูลการจองให้เรียบร้อยก่อนกดปุ่มยืนยัน ?");
+
+            Stage stage3 = (Stage) alert.getDialogPane().getScene().getWindow();
             try {
-                for (int ii = 0; ii < room_man.searchRoom(false).size(); ii++) {
-                    Room roomCheck = (Room) tableView.getItems().get(ii);
-                    if (roomCheck.isSelect()) {
-                        roomCheckList.add(roomCheck);
-                    }
-                }
-            } catch (IOException ex) {
+                stage3.getIcons().add(new Image(new FileInputStream(new File("src/img/icon.png"))));
+            } catch (FileNotFoundException ex) {
                 Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            for (int p = 0; p < roomCheckList.size(); p++) {
-                BookingManagement bookmg = new BookingManagement();
-                Booking booking = new Booking(acc_temp.getFirstName() + "   " + acc_temp.getLastName(), check_in_date.getValue().toString(), check_out_date.getValue().toString(),
-                        roomCheckList.get(p).getRoomType(), roomCheckList.get(p).getRoomClass(), roomCheckList.get(p).getBuilding(), roomCheckList.get(p).getFloor(),
-                        adult_num.getValue().toString(), young_num.getValue().toString(),
-                        String.valueOf(breakfast.isSelected()), String.valueOf(dinner.isSelected()), this.summery_price, "Booked");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
                 try {
-                    bookmg.addBooking(roomCheckList.get(p).getRoomID(), roomCheckList.get(p).getRoomNumber() , booking);
+                    for (int ii = 0; ii < room_man.searchRoom(false).size(); ii++) {
+                        Room roomCheck = (Room) tableView.getItems().get(ii);
+                        if (roomCheck.isSelect()) {
+                            roomCheckList.add(roomCheck);
+                        }
+                    }
                 } catch (IOException ex) {
                     Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
+                for (int p = 0; p < roomCheckList.size(); p++) {
+                    BookingManagement bookmg = new BookingManagement();
+                    Booking booking = new Booking(acc_temp.getFirstName() + "   " + acc_temp.getLastName(), check_in_date.getValue().toString(), check_out_date.getValue().toString(),
+                            roomCheckList.get(p).getRoomType(), roomCheckList.get(p).getRoomClass(), roomCheckList.get(p).getBuilding(), roomCheckList.get(p).getFloor(),
+                            adult_num.getValue().toString(), young_num.getValue().toString(),
+                            String.valueOf(breakfast.isSelected()), String.valueOf(dinner.isSelected()), this.summery_price, "Booked");
+                    try {
+                        bookmg.addBooking(roomCheckList.get(p).getRoomID(), roomCheckList.get(p).getRoomNumber(), booking);
+                    } catch (IOException ex) {
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+
+            } else {
+                alert.close();
             }
 
             tableView.getItems().clear();
@@ -1071,6 +1090,22 @@ public class User extends Application {
                 try {
                     if (db.editAccount(acc_temp)) {
                         System.out.println("success !");
+                        back_bt.setVisible(false);
+                        profile_bg.setVisible(false);
+                        save_bt.setVisible(false);
+
+                        profile_name_label.setVisible(false);
+                        profile_name.setVisible(false);
+                        profile_lastname_label.setVisible(false);
+                        profile_lastname.setVisible(false);
+                        profile_age_label.setVisible(false);
+                        profile_age.setVisible(false);
+                        profile_gender_label.setVisible(false);
+                        profile_gender.setVisible(false);
+                        profile_email_label.setVisible(false);
+                        profile_email.setVisible(false);
+                        profile_phone_label.setVisible(false);
+                        profile_phone.setVisible(false);
                     } else {
                         System.out.println("Fail !");
                     }
@@ -1083,7 +1118,7 @@ public class User extends Application {
         });
 
         //===================|  Back Home [Button] setting |=========================
-        Button back_bt = new Button("กลับ");
+        back_bt = new Button("กลับ");
         back_bt.setFont(Font.loadFont(new FileInputStream("src/font/ThaiSansNeue-Bold.otf"), 26));
         back_bt.setStyle("-fx-background-radius: 30; -fx-background-color: #F67575; -fx-text-fill: #000000");
         back_bt.setVisible(false);
